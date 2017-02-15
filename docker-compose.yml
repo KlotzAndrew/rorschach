@@ -14,3 +14,16 @@ services:
       AT_USER_ID: ${AT_USER_ID}
       AT_PASSWORD: ${AT_PASSWORD}
 
+  web_server:
+    build: ./web_server
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./web_server:/code
+    depends_on:
+      - db
+    command: mix phoenix.server
+
+  db:
+    image: postgres
+
