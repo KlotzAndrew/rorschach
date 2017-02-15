@@ -20,7 +20,9 @@ defmodule WebServer.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", WebServer do
-  #   pipe_through :api
-  # end
+  scope "/api/v1", WebServer do
+    pipe_through :api
+
+    resources "/ticks", TickController, except: [:new, :edit]
+  end
 end
