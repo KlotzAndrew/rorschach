@@ -24,5 +24,6 @@ defmodule WebServer.Router do
     pipe_through :api
 
     resources "/ticks", TickController, except: [:new, :edit]
+    resources "/assets", AssetController, except: [:new, :edit]
   end
 end
