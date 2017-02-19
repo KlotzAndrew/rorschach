@@ -16,6 +16,16 @@ defmodule WebServer do
       # worker(WebServer.Worker, [arg1, arg2, arg3]),
     ]
 
+    children =
+      case Mix.env do
+        :test ->
+          IO.puts "TickerStream not starting in test env..."
+          children
+        _ ->
+          IO.puts "TickerStream starting..."
+          children ++ [worker(WebServer.TickerStream, [])]
+      end
+
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: WebServer.Supervisor]

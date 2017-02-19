@@ -22,8 +22,16 @@ services:
       - ./web_server:/code
     depends_on:
       - db
+      - market_client_demo
     command: mix phoenix.server
 
   db:
     image: postgres
 
+  market_client_demo:
+    build: ./market_client_demo
+    volumes:
+      - ./market_client_demo:/code
+    command: node app.js
+    ports:
+      - "3000:3000"

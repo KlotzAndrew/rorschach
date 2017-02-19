@@ -10,9 +10,18 @@ defmodule WebServer.TickView do
   end
 
   def render("tick.json", %{tick: tick}) do
-    %{id: tick.id,
-      name: tick.name,
+    %{
+      id: tick.id,
+      type: tick.type,
       asset_id: tick.asset_id,
-      price: tick.price}
+      quote_condition: tick.quote_condition,
+      bid_exchange: tick.bid_exchange,
+      ask_exchange: tick.ask_exchange,
+      bid_price: tick.bid_price,
+      ask_price: tick.ask_price,
+      bid_size: tick.bid_size,
+      ask_size: tick.ask_size,
+      time: tick.time
+    }
   end
 end
