@@ -26,7 +26,29 @@ config :web_server, WebServer.Endpoint,
   ]
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, format: "[$level] $message\n",
+  backends: [
+    {LoggerFileBackend, :error_log},
+    {LoggerFileBackend, :info_log},
+    {LoggerFileBackend, :warn_log},
+    {LoggerFileBackend, :debug_log},
+  ]
+
+config :logger, :error_log,
+  path: "log/error.log",
+  level: :error
+
+config :logger, :info_log,
+  path: "log/info.log",
+  level: :info
+
+config :logger, :warn_log,
+  path: "log/warn.log",
+  level: :warn
+
+config :logger, :debug_log,
+  path: "log/debug.log",
+  level: :debug
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
