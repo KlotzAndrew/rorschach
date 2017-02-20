@@ -25,5 +25,6 @@ defmodule WebServer.Router do
 
     resources "/ticks", TickController, except: [:new, :edit]
     resources "/assets", AssetController, except: [:new, :edit]
+    post "/assets/search", AssetController, :search
   end
 end

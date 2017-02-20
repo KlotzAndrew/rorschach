@@ -2,6 +2,7 @@ defmodule WebServer.AssetController do
   use WebServer.Web, :controller
 
   alias WebServer.Asset
+  alias WebServer.AssetFetcher
 
   def index(conn, _params) do
     assets = Repo.all(Asset)
@@ -26,6 +27,11 @@ defmodule WebServer.AssetController do
 
   def show(conn, %{"id" => id}) do
     asset = Repo.get!(Asset, id)
+    render(conn, "show.json", asset: asset)
+  end
+
+  def search(conn, %{"ticker" => ticker}) do
+    asset = AssetFetcher.get_by_ticker(ticker)
     render(conn, "show.json", asset: asset)
   end
 

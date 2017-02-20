@@ -2,7 +2,7 @@ defmodule WebServer.AssetControllerTest do
   use WebServer.ConnCase
 
   alias WebServer.Asset
-  @valid_attrs %{name: "some content", ticker: "some content"}
+  @valid_attrs %{name: "Google Inc.", ticker: "GOOG"}
   @invalid_attrs %{ticker: nil}
 
   setup %{conn: conn} do
@@ -20,6 +20,21 @@ defmodule WebServer.AssetControllerTest do
     assert json_response(conn, 200)["data"] == %{"id" => asset.id,
       "name" => asset.name,
       "ticker" => asset.ticker}
+  end
+
+  test "searches chosen resource when present", %{conn: conn} do
+    asset = Repo.insert! Asset.changeset(%Asset{}, @valid_attrs)
+    conn = post conn, asset_path(conn, :search), ticker: asset.ticker
+    assert json_response(conn, 200)["data"] == %{"id" => asset.id,
+      "name" => asset.name,
+      "ticker" => asset.ticker}
+  end
+
+  test "searches chosen resource when not present", %{conn: conn} do
+    conn = post conn, asset_path(conn, :search), ticker: @valid_attrs.ticker
+    data = json_response(conn, 200)["data"]
+    assert data["name"] == @valid_attrs.name
+    assert data["ticker"] == @valid_attrs.ticker
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
