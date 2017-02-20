@@ -34,4 +34,4 @@ services:
       - ./market_client_demo:/code
     command: node app.js
     ports:
-      - "3000:3000"
+      - "5020:5020"

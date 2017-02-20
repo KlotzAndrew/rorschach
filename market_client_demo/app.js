@@ -1,22 +1,41 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
+var moment = require('moment');
 
-app.get('/', function (req, res) {
-  quotes = [
-    'Q,TSLA,0,K,Q,280.650000,280.770000,1,5,20170215125426269\n',
-    'Q,TSLA,0,K,Q,280.750000,280.850000,1,1,20170215125357729\n',
-    'Q,AAPL,0,Q,Q,134.990000,135.000000,11,24,20170215125356166\n',
-    'Q,AAPL,0,Q,Q,134.990000,135.000000,17,17,20170215125358329\n',
-    'Q,GOOG,0,Z,Q,821.490000,821.720000,1,1,20170215125357850\n',
-    'Q,GOOG,0,P,Q,821.500000,821.720000,2,1,20170215125358309\n',
-  ];
+// /quoteStream?symbol=AAPL+GOOG
+app.get('/quoteStream', function(req, res) {
+  res.writeHead(200, { "Content-Type": "text/event-stream" });
 
-  setInterval(function() {
-    quote = quotes[Math.floor(Math.random() * quotes.length)];
-    res.write(quote);
-  }, 60000)
+  req.query.symbol.split(" ").forEach(function(symbol) {
+    randomWalk(res, symbol)
+  })
 })
 
-app.listen(3000, function () {
-  console.log('Market client demo running on 3000!')
+function randomWalk(res, symbol) {
+  var value = charsToInt(symbol);
+  res.write(quote_tick(symbol, value))
+
+  setInterval(function() {
+    value = value * (1 + Math.random()*0.01 - Math.random()*0.01)
+    res.write(quote_tick(symbol, value))
+  }, 1000)
+}
+
+// 'Q,TSLA,0,K,Q,280.650000,280.770000,1,5,20170215125426269\n'
+function quote_tick(symbol, value) {
+  timestamp = moment.utc().format('YYYYMMDDHHmmssSSS');
+  bid = value*.99;
+  ask = value;
+
+  return `Q,${symbol},0,K,Q,${bid},${ask},1,5,${timestamp}\n`;
+}
+
+function charsToInt(symbol) {
+  value = 0;
+  symbol.split('').forEach(function(char) { value += char.charCodeAt(0) })
+  return value / symbol.split('').length
+}
+
+app.listen(5020, function () {
+  console.log('Market client demo running on 5020!')
 })

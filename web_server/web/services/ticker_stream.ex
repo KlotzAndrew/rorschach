@@ -11,8 +11,8 @@ defmodule WebServer.TickerStream do
   end
 
   def init(:ok) do
-    url = "market_client_demo:3000"
-    {:ok, HTTPoison.get!(url, %{}, [stream_to: self()])}
+    url = "market_client_demo:5020/quoteStream?symbol=AAPL"
+    {:ok, HTTPoison.get!(url, %{}, [timeout: :infinity, stream_to: self()])}
   end
 
   def handle_info(msg, state) do
