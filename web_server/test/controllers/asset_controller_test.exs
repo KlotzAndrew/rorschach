@@ -2,7 +2,7 @@ defmodule WebServer.AssetControllerTest do
   use WebServer.ConnCase
 
   alias WebServer.Asset
-  @valid_attrs %{exchange: "some content", name: "some content", ticker: "some content"}
+  @valid_attrs %{name: "some content", ticker: "some content"}
   @invalid_attrs %{ticker: nil}
 
   setup %{conn: conn} do
@@ -19,8 +19,7 @@ defmodule WebServer.AssetControllerTest do
     conn = get conn, asset_path(conn, :show, asset)
     assert json_response(conn, 200)["data"] == %{"id" => asset.id,
       "name" => asset.name,
-      "ticker" => asset.ticker,
-      "exchange" => asset.exchange}
+      "ticker" => asset.ticker}
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

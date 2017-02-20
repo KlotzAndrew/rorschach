@@ -2,7 +2,6 @@ defmodule TickHandlerTest do
   use ExUnit.Case, async: true
 
   alias WebServer.TickHandler
-  # alias WebServer.Repo
   alias WebServer.Tick
 
   defmodule Repo do

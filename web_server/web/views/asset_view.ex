@@ -12,7 +12,6 @@ defmodule WebServer.AssetView do
   def render("asset.json", %{asset: asset}) do
     %{id: asset.id,
       name: asset.name,
-      ticker: asset.ticker,
-      exchange: asset.exchange}
+      ticker: asset.ticker}
   end
 end

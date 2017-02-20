@@ -4,7 +4,6 @@ defmodule WebServer.Asset do
   schema "assets" do
     field :name, :string
     field :ticker, :string
-    field :exchange, :string
 
     timestamps()
   end
@@ -14,7 +13,7 @@ defmodule WebServer.Asset do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :ticker, :exchange])
-    |> validate_required([:name, :ticker, :exchange])
+    |> cast(params, [:name, :ticker])
+    |> validate_required([:name, :ticker])
   end
 end
