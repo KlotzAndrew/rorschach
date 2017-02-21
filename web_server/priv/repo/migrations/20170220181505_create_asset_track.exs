@@ -5,6 +5,7 @@ defmodule WebServer.Repo.Migrations.CreateAssetTrack do
     create table(:asset_tracks) do
       add :portfolio_id, :integer, null: false
       add :asset_id, :integer, null: false
+      add :active, :boolean, default: false, null: false
 
       timestamps()
     end

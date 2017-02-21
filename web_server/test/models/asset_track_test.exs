@@ -3,7 +3,7 @@ defmodule WebServer.AssetTrackTest do
 
   alias WebServer.AssetTrack
 
-  @valid_attrs %{asset_id: 42, portfolio_id: 42}
+  @valid_attrs %{asset_id: 42, portfolio_id: 42, active: true}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

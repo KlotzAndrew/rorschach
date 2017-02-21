@@ -2,6 +2,7 @@ defmodule WebServer.TickerStream do
   use GenServer
 
   alias WebServer.TickHandler
+  alias WebServer.QuoteStreamUrl
 
   # @market_client "http://market_client:5000"
   # @demo_fields "&field=4+10+11"
@@ -11,7 +12,7 @@ defmodule WebServer.TickerStream do
   end
 
   def init(:ok) do
-    url = "market_client_demo:5020/quoteStream?symbol=AAPL"
+    url = QuoteStreamUrl.url
     {:ok, HTTPoison.get!(url, %{}, [timeout: :infinity, stream_to: self()])}
   end
 

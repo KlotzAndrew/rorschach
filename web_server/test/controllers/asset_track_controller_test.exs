@@ -2,7 +2,7 @@ defmodule WebServer.AssetTrackControllerTest do
   use WebServer.ConnCase
 
   alias WebServer.AssetTrack
-  @valid_attrs %{asset_id: 42, portfolio_id: 42}
+  @valid_attrs %{asset_id: 42, portfolio_id: 42, active: true}
   @invalid_attrs %{asset_id: nil}
 
   setup %{conn: conn} do
