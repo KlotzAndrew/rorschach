@@ -7,7 +7,7 @@ app.get('/quoteStream', function(req, res) {
   res.writeHead(200, { "Content-Type": "text/event-stream" });
 
   req.query.symbol.split(" ").forEach(function(symbol) {
-    randomWalk(res, symbol)
+    if (symbol) { randomWalk(res, symbol) }
   })
 })
 
