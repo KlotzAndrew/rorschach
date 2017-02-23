@@ -3,6 +3,7 @@ defmodule WebServer.Tick do
 
   schema "ticks" do
     field :type, :string
+    field :ticker, :string
     field :asset_id, :integer
     field :quote_condition, :integer
     field :bid_exchange, :string
@@ -21,7 +22,7 @@ defmodule WebServer.Tick do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:type, :asset_id, :quote_condition, :bid_exchange,
+    |> cast(params, [:type, :ticker, :asset_id, :quote_condition, :bid_exchange,
       :ask_exchange, :bid_price, :ask_price, :bid_size, :ask_size, :time])
     |> validate_required([:asset_id])
   end

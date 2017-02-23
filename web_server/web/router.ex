@@ -23,6 +23,7 @@ defmodule WebServer.Router do
   scope "/api/v1", WebServer do
     pipe_through :api
 
+    resources "/trades", TradeController, except: [:new, :edit]
     resources "/portfolios", PortfolioController, except: [:new, :edit]
     resources "/asset_tracks", AssetTrackController, except: [:new, :edit]
     resources "/ticks", TickController, except: [:new, :edit]

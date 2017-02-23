@@ -13,8 +13,11 @@ defmodule WebServer.QuoteStreamUrl do
   end
 
   # TODO: this assumes all assets are tracked
+  # TODO: figure out how to handle cash equity pricing
   defp tracking_assets do
-    query = from a in Asset, select: a.ticker
+    query = from a in Asset,
+            where: a.ticker != "CURRENCY:USD",
+            select: a.ticker
 
     Repo.all(query)
   end

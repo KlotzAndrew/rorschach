@@ -1,21 +1,25 @@
 defmodule WebServer.TickHandler do
   alias WebServer.Repo
   alias WebServer.Tick
+  alias WebServer.Trader
 
-  def parse(chunk, repo \\ Repo) do
+  def parse(chunk, repo \\ Repo, trader \\ Trader) do
     tick_strings = String.split(chunk, "\n", trim: true)
-    Enum.each tick_strings, fn string -> parse_tick(string, repo) end
+    Enum.each tick_strings, fn string -> parse_tick(string, repo, trader) end
   end
 
-  defp parse_tick(string, repo) do
+  defp parse_tick(string, repo, trader) do
     values = String.split(string, ",")
     if Enum.at(values, 0) == "Q" do
-      save_tick(values, repo)
+      changeset = build_tick(values)
+
+      trader.trade(changeset)
+      save_tick(changeset, repo)
     end
   end
 
-  defp save_tick(tick, repo) do
-    changeset = Tick.changeset(%Tick{
+  defp build_tick(tick) do
+    Tick.changeset(%Tick{
       type: Enum.at(tick, 0),
       asset_id: 1,
       quote_condition: str_to_int(Enum.at(tick, 2)),
@@ -27,6 +31,9 @@ defmodule WebServer.TickHandler do
       ask_size: Decimal.new(Enum.at(tick, 8)),
       time: datetime(Enum.at(tick, 9))
     })
+  end
+
+  defp save_tick(changeset, repo) do
     repo.insert!(changeset)
   end
 
