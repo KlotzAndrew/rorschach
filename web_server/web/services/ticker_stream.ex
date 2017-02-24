@@ -14,7 +14,7 @@ defmodule WebServer.TickerStream do
 
   def init(:ok) do
     url = QuoteStreamUrl.url
-    {:ok, HTTPoison.get!(url, %{}, [timeout: :infinity, recv_timeout: :infinity, stream_to: self()])}
+    {:ok, HTTPoison.get!(url, %{}, [timeout: :infinity, stream_to: self()])}
   end
 
   def handle_info(msg, state) do
@@ -28,16 +28,16 @@ defmodule WebServer.TickerStream do
   end
 
   defp parse_message(%HTTPoison.AsyncStatus{code: code}) do
-    Logger.info "AsyncStatus: #{code}"
+    Logger.info "AsyncStatus: ---"
   end
 
   defp parse_message(%HTTPoison.AsyncHeaders{headers: headers}) do
-    Logger.info "AsyncHeaders: #{headers}"
+    Logger.info "AsyncHeaders: ---"
   end
 
   defp parse_message(%HTTPoison.Error{reason: reason}) do
-    Logger.info "Error: #{reason}"
+    Logger.info "HTTPoison.Error: ---"
   end
 
-  defp parse_message(msg), do: IO.puts(msg)
+  defp parse_message(msg), do: IO.puts("TickerStream unhandeled message")
 end

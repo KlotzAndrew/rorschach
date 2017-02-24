@@ -20,16 +20,17 @@ defmodule WebServer.TickHandler do
 
   defp build_tick(tick) do
     Tick.changeset(%Tick{
-      type: Enum.at(tick, 0),
-      asset_id: 1,
+      asset_id:        1,
+      type:            Enum.at(tick, 0),
+      ticker:          Enum.at(tick, 1),
       quote_condition: str_to_int(Enum.at(tick, 2)),
-      bid_exchange: Enum.at(tick, 3),
-      ask_exchange: Enum.at(tick, 4),
-      bid_price: Decimal.new(Enum.at(tick, 5)),
-      ask_price: Decimal.new(Enum.at(tick, 6)),
-      bid_size: Decimal.new(Enum.at(tick, 7)),
-      ask_size: Decimal.new(Enum.at(tick, 8)),
-      time: datetime(Enum.at(tick, 9))
+      bid_exchange:    Enum.at(tick, 3),
+      ask_exchange:    Enum.at(tick, 4),
+      bid_price:       Decimal.new(Enum.at(tick, 5)),
+      ask_price:       Decimal.new(Enum.at(tick, 6)),
+      bid_size:        Decimal.new(Enum.at(tick, 7)),
+      ask_size:        Decimal.new(Enum.at(tick, 8)),
+      time:            datetime(Enum.at(tick, 9))
     })
   end
 
@@ -46,12 +47,12 @@ defmodule WebServer.TickHandler do
   # 2017_02_15_12_54_26_269
   defp datetime(string) do
     {_status, time} = Ecto.DateTime.cast(%{
-      year: String.slice(string, 0..3),
-      month: String.slice(string, 4..5),
-      day: String.slice(string, 6..7),
-      hour: String.slice(string, 8..9),
-      minute: String.slice(string, 10..11),
-      second: String.slice(string, 12..13),
+      year:        String.slice(string, 0..3),
+      month:       String.slice(string, 4..5),
+      day:         String.slice(string, 6..7),
+      hour:        String.slice(string, 8..9),
+      minute:      String.slice(string, 10..11),
+      second:      String.slice(string, 12..13),
       microsecond: String.slice(string, 14..16) <> "000",
     })
     time
