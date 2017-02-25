@@ -16,4 +16,16 @@ defmodule WebServer.TradeView do
       quantity: trade.quantity,
       price: trade.price}
   end
+
+  def render("asset_sums.json", %{sums: sums}) do
+    %{data: render_many(sums, WebServer.TradeView, "asset_sum.json", as: :sum)}
+  end
+
+  def render("asset_sum.json", %{sum: sum}) do
+    {id, quantity} = sum
+    %{
+      id:       id,
+      quantity: quantity
+    }
+  end
 end

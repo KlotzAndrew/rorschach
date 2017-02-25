@@ -1,11 +1,16 @@
 defmodule WebServer.TradeController do
   use WebServer.Web, :controller
 
-  alias WebServer.Trade
+  alias WebServer.{Trade, AssetSums}
 
   def index(conn, _params) do
     trades = Repo.all(Trade)
     render(conn, "index.json", trades: trades)
+  end
+
+  def asset_sums(conn, %{"portfolio_id" => portfolio_id}) do
+    sums = AssetSums.totals(portfolio_id)
+    render(conn, "asset_sums.json", sums: sums)
   end
 
   def create(conn, %{"trade" => trade_params}) do
