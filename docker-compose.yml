@@ -35,3 +35,13 @@ services:
     command: node app.js
     ports:
       - "5020:5020"
+
+  web_client:
+    build: ./web_client
+    volumes:
+      - ./web_client:/code
+    command: npm start
+    ports:
+      - "3000:3000"
+    links:
+      - web_server
