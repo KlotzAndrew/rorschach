@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { getPortfolio } from './actions/index'
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  componentWillMount() {
+    this.props.getPortfolio();
+  }
+
   render() {
     return (
       <div className="App">
@@ -11,6 +17,7 @@ class App extends Component {
           <h2>Welcome to React</h2>
         </div>
         <p className="App-intro">
+          <div>{this.props.portfolio.name}</div>
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
       </div>
@@ -18,4 +25,11 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  portfolio: state.portfolios.portfolio
+})
+
+export default connect(
+  mapStateToProps,
+  { getPortfolio }
+)(App)
