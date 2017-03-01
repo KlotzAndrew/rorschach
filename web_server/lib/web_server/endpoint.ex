@@ -38,5 +38,7 @@ defmodule WebServer.Endpoint do
     key: "_web_server_key",
     signing_salt: "1Ok25cNM"
 
+  plug CORSPlug
+
   plug WebServer.Router
 end
