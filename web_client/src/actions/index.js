@@ -12,3 +12,15 @@ export const getPortfolio = () => dispatch => {
       dispatch(setPortfolio(response.data.data))
     })
 }
+
+const setAssetTotals = (assets) => ({
+  type: types.SET_ASSET_TOTALS,
+  assets
+})
+
+export const getAssetTotals = (portfolioId) => dispatch => {
+  portfolio.getAssetTotals(portfolio)
+    .then(response => {
+      dispatch(setAssetTotals(response.data.data))
+    })
+}

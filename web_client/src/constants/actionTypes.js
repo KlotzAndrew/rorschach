@@ -1,1 +1,2 @@
 export const SET_PORTFOLIO = 'SET_PORTFOLIO'
+export const SET_ASSET_TOTALS = 'SET_ASSET_TOTALS'

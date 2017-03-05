@@ -1,35 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { getPortfolio } from './actions/index'
-import logo from './logo.svg';
+import { getPortfolio, getAssetTotals } from './actions/index'
 import './App.css';
 
 class App extends Component {
   componentWillMount() {
     this.props.getPortfolio();
+    this.props.getAssetTotals();
   }
 
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          <div>{this.props.portfolio.name}</div>
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div>{this.props.portfolio.name}</div>
+        {this.mapAssets(this.props.assets)}
       </div>
     );
+  }
+
+  mapAssets(assets) {
+    if (!assets) return null
+
+    return Object.keys(assets).map(function(key) {
+      const asset = assets[key]
+      return <div key={asset.id}>
+        asset_id: {asset.id} | quantity: {asset.quantity}
+      </div>
+    })
   }
 }
 
 const mapStateToProps = (state) => ({
-  portfolio: state.portfolios.portfolio
+  portfolio: state.portfolios.portfolio,
+  assets: state.portfolios.assets,
 })
 
 export default connect(
   mapStateToProps,
-  { getPortfolio }
+  { getPortfolio, getAssetTotals }
 )(App)
