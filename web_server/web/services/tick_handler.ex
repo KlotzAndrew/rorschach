@@ -1,7 +1,5 @@
 defmodule WebServer.TickHandler do
-  alias WebServer.Repo
-  alias WebServer.Tick
-  alias WebServer.Trader
+  alias WebServer.{Trader, Tick, Repo, Broadcaster}
 
   def parse(chunk, repo \\ Repo, trader \\ Trader) do
     tick_strings = String.split(chunk, "\n", trim: true)
@@ -13,7 +11,8 @@ defmodule WebServer.TickHandler do
     if Enum.at(values, 0) == "Q" do
       changeset = build_tick(values)
 
-      trader.trade(changeset)
+      trades = trader.trade(changeset)
+      Broadcaster.broadcast_trades(trades)
       save_tick(changeset, repo)
     end
   end

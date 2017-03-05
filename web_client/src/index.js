@@ -23,6 +23,12 @@ channel.join()
   .receive('ok', resp => { console.log('Joined successfully', resp) })
   .receive('error', resp => { console.log('Unable to join', resp) })
 
+channel.on('new:trade', payload => {
+  console.log('data', payload);
+  // store.dispatch(receiveChannelData(payload));
+  }
+);
+
 render(
   <Provider store={store}>
     <App />

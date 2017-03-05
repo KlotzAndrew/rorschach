@@ -16,13 +16,15 @@ defmodule TraderTest do
 
     def insert!(changeset) do
       if changeset.valid? do
-        send self(), :insert_1
+        # changeset.data
+        "trade_1"
       end
     end
 
     def insert(changeset) do
       if changeset.valid? do
-        send self(), :insert_2
+        # changeset.data
+        "trade_2"
       end
     end
   end
@@ -33,10 +35,9 @@ defmodule TraderTest do
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    Trader.trade(changeset, Repo, 1)
+    result = Trader.trade(changeset, Repo, 1)
 
-    assert_receive :insert_1
-    assert_receive :insert_2
+    assert ["trade_1", "trade_2"] == result
   end
 
   test "sells stock" do
@@ -45,9 +46,8 @@ defmodule TraderTest do
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    Trader.trade(changeset, Repo, 2)
+    result = Trader.trade(changeset, Repo, 2)
 
-    assert_receive :insert_1
-    assert_receive :insert_2
+    assert ["trade_1", "trade_2"] == result
   end
 end
