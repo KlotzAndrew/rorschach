@@ -13,13 +13,14 @@ const portfolios = (state = initialState, action) => {
         portfolio: action.portfolio
       }
     case types.SET_ASSET_TOTALS:
-      let new_state = Object.assign({}, state)
-      action.assets.forEach(function(asset) {
-        new_state.assets[asset.id] = asset
-      })
       return {
         ...state,
         assets: assignAssets(state.assets, action.assets)
+      }
+    case types.ADD_TRADE:
+      return {
+        ...state,
+        assets: updateQuantity(state, action.trade)
       }
     default:
       return state
@@ -27,11 +28,20 @@ const portfolios = (state = initialState, action) => {
 
 }
 
+function updateQuantity(state, trade) {
+  let assets = Object.assign({}, state.assets)
+  let asset = Object.assign({}, assets[trade.to_asset_id])
+  asset.quantity += trade.quantity
+  assets[asset.id] = asset
+  return assets
+}
+
 function assignAssets(state_assets, new_assets) {
+  let assets = Object.assign({}, state_assets)
   new_assets.forEach(function(asset) {
-    state_assets[asset.id] = asset
+    assets[asset.id] = asset
   })
-  return state_assets
+  return assets
 };
 
 export default portfolios;

@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 import { Socket } from 'phoenix-socket';
+import { addTrade } from './actions/index'
 import App from './App';
 import './index.css';
 import reducer from './reducers/index'
@@ -24,8 +25,7 @@ channel.join()
   .receive('error', resp => { console.log('Unable to join', resp) })
 
 channel.on('new:trade', payload => {
-  console.log('data', payload);
-  // store.dispatch(receiveChannelData(payload));
+    store.dispatch(addTrade(payload))
   }
 );
 

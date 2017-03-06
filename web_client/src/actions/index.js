@@ -24,3 +24,8 @@ export const getAssetTotals = (portfolioId) => dispatch => {
       dispatch(setAssetTotals(response.data.data))
     })
 }
+
+export const addTrade = (trade) => {
+  return {type: types.ADD_TRADE,
+  trade}
+}
