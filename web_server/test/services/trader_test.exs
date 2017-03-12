@@ -1,9 +1,7 @@
 defmodule TraderTest do
   use ExUnit.Case, async: true
 
-  alias WebServer.Trader
-  alias WebServer.Tick
-  alias WebServer.Asset
+  alias WebServer.{Asset, Tick, Trader}
 
   defmodule Repo do
     def get_by!(_asset, _ticker) do
@@ -37,7 +35,7 @@ defmodule TraderTest do
     })
     result = Trader.trade(changeset, Repo, 1)
 
-    assert ["trade_1", "trade_2"] == result
+    assert ["trade_1"] == result
   end
 
   test "sells stock" do
@@ -48,6 +46,6 @@ defmodule TraderTest do
     })
     result = Trader.trade(changeset, Repo, 2)
 
-    assert ["trade_1", "trade_2"] == result
+    assert ["trade_1"] == result
   end
 end

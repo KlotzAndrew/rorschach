@@ -1,18 +1,18 @@
 defmodule WebServer.TickHandler do
   alias WebServer.{Trader, Tick, Repo, Broadcaster}
 
-  def parse(chunk, repo \\ Repo, trader \\ Trader) do
+  def parse(chunk, repo \\ Repo, trader \\ Trader, broadcaster \\ Broadcaster) do
     tick_strings = String.split(chunk, "\n", trim: true)
-    Enum.each tick_strings, fn string -> parse_tick(string, repo, trader) end
+    Enum.each tick_strings, fn string -> parse_tick(string, repo, trader, broadcaster) end
   end
 
-  defp parse_tick(string, repo, trader) do
+  defp parse_tick(string, repo, trader, broadcaster) do
     values = String.split(string, ",")
     if Enum.at(values, 0) == "Q" do
       changeset = build_tick(values)
 
       trades = trader.trade(changeset)
-      Broadcaster.broadcast_trades(trades)
+      broadcaster.broadcast_trades(trades)
       save_tick(changeset, repo)
     end
   end

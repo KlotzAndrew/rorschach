@@ -18,8 +18,15 @@ const setAssetTotals = (assets) => ({
   assets
 })
 
-export const getAssetTotals = (portfolioId) => dispatch => {
-  portfolio.getAssetTotals(portfolio)
+export const getCashTotals = (portfolioId) => dispatch => {
+  portfolio.getCashTotals(portfolio)
+    .then(response => {
+      dispatch(setAssetTotals(response.data.data))
+    })
+}
+
+export const getStockTotals = (portfolioId) => dispatch => {
+  portfolio.getStockTotals(portfolio)
     .then(response => {
       dispatch(setAssetTotals(response.data.data))
     })

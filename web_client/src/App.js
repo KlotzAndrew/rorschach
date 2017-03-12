@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getPortfolio, getAssetTotals } from './actions/index';
+import { getPortfolio, getCashTotals, getStockTotals } from './actions/index';
 import './App.css';
 
 export class App extends Component {
   componentWillMount() {
     this.props.getPortfolio();
-    this.props.getAssetTotals();
+    this.props.getCashTotals();
+    this.props.getStockTotals();
   }
 
   render() {
@@ -39,5 +40,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { getPortfolio, getAssetTotals }
+  { getPortfolio, getCashTotals, getStockTotals }
 )(App);

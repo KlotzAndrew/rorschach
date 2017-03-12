@@ -3,7 +3,8 @@ defmodule WebServer.TradeTest do
 
   alias WebServer.Trade
 
-  @valid_attrs %{from_asset_id: 42, price: "120.5", quantity: 42, to_asset_id: 42, portfolio_id: 42}
+  @valid_attrs %{cash_id: 42, price: "120.5", quantity: 42,
+                 asset_id: 42, portfolio_id: 42, cash_total: "1.20", type: "Buy"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

@@ -30,6 +30,7 @@ defmodule WebServer.AssetControllerTest do
       "ticker" => asset.ticker}
   end
 
+  @tag :skip
   test "searches chosen resource when not present", %{conn: conn} do
     conn = post conn, asset_path(conn, :search), ticker: @valid_attrs.ticker
     data = json_response(conn, 200)["data"]

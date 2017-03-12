@@ -1,7 +1,5 @@
 defmodule WebServer.Trader do
-  alias WebServer.Trade
-  alias WebServer.Repo
-  alias WebServer.Asset
+  alias WebServer.{Asset, Trade, Repo}
 
   def trade(changeset, repo \\ Repo, roll \\ :rand.uniform(4)) do
     case roll do
@@ -12,48 +10,33 @@ defmodule WebServer.Trader do
   end
 
   defp buy_stock(changeset, repo) do
-    cash_asset = repo.get_by!(Asset, ticker: "CURRENCY:USD")
-    asset      = repo.get_by(Asset, ticker: changeset.data.ticker)
+    cash  = repo.get_by!(Asset, ticker: "CASH:USD")
+    asset = repo.get_by(Asset, ticker: changeset.data.ticker)
 
-    asset_trade = trade_for_asset(repo, changeset, asset, cash_asset, 1)
-    cash_trade  = trade_for_cash(repo, changeset, asset, cash_asset, -1)
-    [asset_trade, cash_trade]
+    trade = execute_trade(repo, changeset, asset, cash, 1)
+    [trade]
   end
 
   defp sell_stock(changeset, repo) do
-    cash_asset = repo.get_by!(Asset, ticker: "CURRENCY:USD")
-    asset      = repo.get_by(Asset, ticker: changeset.data.ticker)
+    cash  = repo.get_by!(Asset, ticker: "CASH:USD")
+    asset = repo.get_by(Asset, ticker: changeset.data.ticker)
 
-    asset_trade = trade_for_asset(repo, changeset, asset, cash_asset, -1)
-    cash_trade  = trade_for_cash(repo, changeset, asset, cash_asset, 1)
-    [asset_trade, cash_trade]
+    trade = execute_trade(repo, changeset, asset, cash,-1)
+    [trade]
   end
 
-  defp trade_for_asset(repo, changeset, asset, cash_asset, direction) do
+  defp execute_trade(repo, changeset, asset, cash, quantity) do
+    cash_offset = Decimal.new(-1)
+    price = changeset.data.ask_price
+    cash_total = Decimal.mult(price,  Decimal.new(quantity)) |> Decimal.mult(cash_offset)
     repo.insert! Trade.changeset(%Trade{
-      portfolio_id:  1,
-      from_asset_id: cash_asset.id,
-      to_asset_id:   asset.id,
-      quantity:      1 * direction,
-      price:         changeset.data.ask_price
+      portfolio_id: 1,
+      asset_id:     asset.id,
+      cash_id:      cash.id,
+      quantity:     quantity,
+      price:        price,
+      cash_total:   cash_total,
+      type:         "Buy"
     })
-  end
-
-  defp trade_for_cash(repo, changeset, asset, cash_asset, direction) do
-    ask_price = decimal_to_int(changeset.data.ask_price)
-    repo.insert! Trade.changeset(%Trade{
-      portfolio_id:  1,
-      from_asset_id: asset.id,
-      to_asset_id:   cash_asset.id,
-      quantity:      -1 * ask_price * direction,
-      price:         1
-    })
-  end
-
-  # TODO: quantity should not be an int...
-  defp decimal_to_int(decimal) do
-    ask_price_string = Decimal.to_string(decimal)
-    {ask_price, _}  = Integer.parse(ask_price_string)
-    ask_price
   end
 end

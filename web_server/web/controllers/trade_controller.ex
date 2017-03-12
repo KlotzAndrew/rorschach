@@ -8,8 +8,13 @@ defmodule WebServer.TradeController do
     render(conn, "index.json", trades: trades)
   end
 
-  def asset_sums(conn, %{"portfolio_id" => portfolio_id}) do
-    sums = AssetSums.totals(portfolio_id)
+  def cash_sums(conn, %{"portfolio_id" => portfolio_id}) do
+    sums = AssetSums.cash(portfolio_id)
+    render(conn, "asset_sums.json", sums: sums)
+  end
+
+  def stock_sums(conn, %{"portfolio_id" => portfolio_id}) do
+    sums = AssetSums.stocks(portfolio_id)
     render(conn, "asset_sums.json", sums: sums)
   end
 
@@ -46,15 +51,5 @@ defmodule WebServer.TradeController do
         |> put_status(:unprocessable_entity)
         |> render(WebServer.ChangesetView, "error.json", changeset: changeset)
     end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    trade = Repo.get!(Trade, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(trade)
-
-    send_resp(conn, :no_content, "")
   end
 end

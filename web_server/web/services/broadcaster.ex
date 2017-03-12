@@ -16,8 +16,10 @@ defmodule WebServer.Broadcaster do
       "price" => trade.price,
       "quantity" => trade.quantity,
       "portfolio_id" => trade.portfolio_id,
-      "from_asset_id" => trade.from_asset_id,
-      "to_asset_id" => trade.to_asset_id
+      "asset_id" => trade.asset_id,
+      "cash_id" => trade.cash_id,
+      "type" => trade.type,
+      "cash_total" => trade.cash_total
     }
   end
 end

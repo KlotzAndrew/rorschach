@@ -6,6 +6,7 @@ const initialState = {
 }
 
 const portfolios = (state = initialState, action) => {
+  console.log('action', action)
   switch (action.type) {
     case types.SET_PORTFOLIO:
       return {

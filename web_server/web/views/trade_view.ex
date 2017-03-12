@@ -11,8 +11,6 @@ defmodule WebServer.TradeView do
 
   def render("trade.json", %{trade: trade}) do
     %{id: trade.id,
-      from_asset_id: trade.from_asset_id,
-      to_asset_id: trade.to_asset_id,
       quantity: trade.quantity,
       price: trade.price}
   end

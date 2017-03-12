@@ -3,10 +3,12 @@ defmodule WebServer.Trade do
 
   schema "trades" do
     field :portfolio_id, :integer
-    field :from_asset_id, :integer
-    field :to_asset_id, :integer
+    field :asset_id, :integer
+    field :cash_id, :integer
     field :quantity, :integer
     field :price, :decimal
+    field :cash_total, :decimal
+    field :type, :string
 
     timestamps()
   end
@@ -16,7 +18,10 @@ defmodule WebServer.Trade do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:from_asset_id, :to_asset_id, :quantity, :price, :portfolio_id])
-    |> validate_required([:from_asset_id, :to_asset_id, :quantity, :price, :portfolio_id])
+    |> cast(params,
+      [:asset_id, :cash_id, :quantity, :price, :portfolio_id, :cash_total,
+       :type])
+    |> validate_required(
+      [:cash_id, :cash_total, :portfolio_id, :type])
   end
 end

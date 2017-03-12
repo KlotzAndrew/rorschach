@@ -2,7 +2,8 @@ defmodule WebServer.TradeControllerTest do
   use WebServer.ConnCase
 
   alias WebServer.Trade
-  @valid_attrs %{from_asset_id: 42, price: "120.5", quantity: 42, to_asset_id: 42, portfolio_id: 42}
+  @valid_attrs %{asset_id: 42, price: "120.5", quantity: 42, cash_id: 42,
+                 portfolio_id: 42, cash_total: "88.88", type: "Buy"}
   @invalid_attrs %{}
 
   setup %{conn: conn} do
@@ -18,8 +19,6 @@ defmodule WebServer.TradeControllerTest do
     trade = Repo.insert! Trade.changeset(%Trade{}, @valid_attrs)
     conn = get conn, trade_path(conn, :show, trade)
     assert json_response(conn, 200)["data"] == %{"id" => trade.id,
-      "from_asset_id" => trade.from_asset_id,
-      "to_asset_id" => trade.to_asset_id,
       "quantity" => trade.quantity,
       "price" => Decimal.to_string(trade.price)}
   end
@@ -53,12 +52,5 @@ defmodule WebServer.TradeControllerTest do
     trade = Repo.insert! Trade.changeset(%Trade{}, @valid_attrs)
     conn = put conn, trade_path(conn, :update, trade), trade: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
-  end
-
-  test "deletes chosen resource", %{conn: conn} do
-    trade = Repo.insert! Trade.changeset(%Trade{}, @valid_attrs)
-    conn = delete conn, trade_path(conn, :delete, trade)
-    assert response(conn, 204)
-    refute Repo.get(Trade, trade.id)
   end
 end
