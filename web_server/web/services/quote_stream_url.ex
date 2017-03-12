@@ -1,8 +1,7 @@
 defmodule WebServer.QuoteStreamUrl do
   import Ecto.Query
 
-  alias WebServer.Repo
-  alias WebServer.Asset
+  alias WebServer.{Asset, Repo}
 
 
   def url do
@@ -16,7 +15,7 @@ defmodule WebServer.QuoteStreamUrl do
   # TODO: figure out how to handle cash equity pricing
   defp tracking_assets do
     query = from a in Asset,
-            where: a.ticker != "CURRENCY:USD",
+            where: a.ticker != "CASH:USD",
             select: a.ticker
 
     Repo.all(query)

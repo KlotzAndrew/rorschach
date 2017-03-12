@@ -14,7 +14,10 @@ export class App extends Component {
     return (
       <div className="App">
         <div>{this.props.portfolio.name}</div>
+        <div>Stocks</div>
         {this.mapAssets(this.props.assets)}
+        <div>Cash</div>
+        {this.mapAssets(this.props.cash_assets)}
       </div>
     );
   }
@@ -35,6 +38,7 @@ const mapStateToProps = (state) => {
   return {
     portfolio: state.portfolios.portfolio,
     assets: state.portfolios.assets,
+    cash_assets: state.portfolios.cash_assets,
   }
 }
 

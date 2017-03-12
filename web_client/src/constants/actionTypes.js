@@ -1,3 +1,4 @@
 export const SET_PORTFOLIO = 'SET_PORTFOLIO'
 export const SET_ASSET_TOTALS = 'SET_ASSET_TOTALS'
+export const SET_CASH_TOTALS = 'SET_CASH_TOTALS'
 export const ADD_TRADE = 'ADD_TRADE'

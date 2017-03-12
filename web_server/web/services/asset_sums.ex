@@ -13,7 +13,7 @@ defmodule WebServer.AssetSums do
 
   def cash(portfolio_id, repo \\ Repo) do
     query = from t in Trade,
-            where: t.portfolio_id == ^portfolio_id  and t.type == "Deposit",
+            where: t.portfolio_id == ^portfolio_id,
             group_by: t.cash_id,
             select: {t.cash_id, sum(t.cash_total)}
 
