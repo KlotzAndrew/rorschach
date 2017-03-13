@@ -13,31 +13,43 @@ export const getPortfolio = () => dispatch => {
     })
 }
 
-const setAssetTotals = (assets) => ({
-  type: types.SET_ASSET_TOTALS,
+const setStockHoldings = (assets) => ({
+  type: types.SET_STOCK_HOLDINGS,
   assets
 })
 
-const setCashTotals = (assets) => ({
-  type: types.SET_CASH_TOTALS,
+const setCashHoldings = (assets) => ({
+  type: types.SET_CASH_HOLDINGS,
   assets
 })
 
 export const getCashTotals = (portfolioId) => dispatch => {
   portfolio.getCashTotals(portfolio)
     .then(response => {
-      dispatch(setCashTotals(response.data.data))
+      dispatch(setCashHoldings(response.data.data))
     })
 }
 
 export const getStockTotals = (portfolioId) => dispatch => {
   portfolio.getStockTotals(portfolio)
     .then(response => {
-      dispatch(setAssetTotals(response.data.data))
+      dispatch(setStockHoldings(response.data.data))
     })
 }
 
 export const addTrade = (trade) => {
   return {type: types.ADD_TRADE,
   trade}
+}
+
+const setAssets = (assets) => ({
+  type: types.SET_ASSETS,
+  assets
+})
+
+export const getAssets = () => dispatch => {
+  portfolio.getAssets()
+    .then(repsonse => {
+      dispatch(setAssets(repsonse.data.data))
+    })
 }
