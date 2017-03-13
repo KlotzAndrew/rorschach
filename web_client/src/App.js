@@ -23,6 +23,9 @@ export class App extends Component {
 
         <div>Cash</div>
         {this.mapAssets(this.props.cash_holdings)}
+
+        <div>Total</div>
+        {this.totalValue()}
       </div>
     );
   }
@@ -37,9 +40,28 @@ export class App extends Component {
 
       if (!asset) return null
       return <div key={holding.id}>
-        {asset.name} | quantity: {holding.quantity}
+        {asset.name}
+        | q: {holding.quantity}
+        | v: {holding.quantity * (holding.price || 1)}
       </div>
     })
+  }
+
+  totalValue() {
+    const stock_total = this.assetTotal(this.props.stock_holdings)
+    const cash_total = this.assetTotal(this.props.cash_holdings)
+
+    return stock_total + cash_total
+  }
+
+  assetTotal(holdings) {
+    const keys = Object.keys(holdings)
+    if (keys.length === 0) return null
+
+    return keys.reduce(function(acc, key) {
+      const holding = holdings[key]
+      return acc + (holding.quantity * (holding.price || 1))
+    }, 0)
   }
 }
 

@@ -54,6 +54,7 @@ function updateAssetQuantity(state, trade) {
   let assets = Object.assign({}, state.stock_holdings)
   let asset = Object.assign({}, assets[trade.asset_id])
   asset.quantity += trade.quantity
+  asset.price = parseFloat(trade.price)
   assets[asset.id] = asset
   return assets
 }
