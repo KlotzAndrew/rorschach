@@ -1,15 +1,15 @@
-defmodule TraderTest do
+defmodule BrokerTest do
   use ExUnit.Case, async: true
 
-  alias WebServer.{Asset, Tick, Trader}
+  alias WebServer.{Asset, Broker, Tick}
 
   defmodule Repo do
-    def get_by!(_asset, _ticker) do
-      %Asset{id: 1}
-    end
-
-    def get_by(_asset, _ticker) do
-      %Asset{id: 2}
+    def get_by!(_asset, ticker: ticker) do
+      case ticker do
+        "CASH:USD" -> %Asset{id: 1}
+        "GOOG" -> %Asset{id: 2}
+        _ -> ""
+      end
     end
 
     def insert!(changeset) do
@@ -18,33 +18,24 @@ defmodule TraderTest do
         "trade_1"
       end
     end
-
-    def insert(changeset) do
-      if changeset.valid? do
-        # changeset.data
-        "trade_2"
-      end
-    end
   end
 
   test "buys stock" do
     changeset = Tick.changeset(%Tick{
-      asset_id:  1,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Repo, 1)
+    result = Broker.buy_stock(changeset, Repo)
 
     assert ["trade_1"] == result
   end
 
   test "sells stock" do
     changeset = Tick.changeset(%Tick{
-      asset_id:  1,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Repo, 2)
+    result = Broker.sell_stock(changeset, Repo)
 
     assert ["trade_1"] == result
   end

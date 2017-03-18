@@ -1,27 +1,19 @@
-defmodule WebServer.Trader do
+defmodule WebServer.Broker do
   alias WebServer.{Asset, Trade, Repo}
 
-  def trade(changeset, repo \\ Repo, roll \\ :rand.uniform(4)) do
-    case roll do
-      1 -> buy_stock(changeset, repo)
-      2 -> sell_stock(changeset, repo)
-      _ -> []
-    end
-  end
-
-  defp buy_stock(changeset, repo) do
+  def buy_stock(changeset, repo \\ Repo) do
     cash  = repo.get_by!(Asset, ticker: "CASH:USD")
-    asset = repo.get_by(Asset, ticker: changeset.data.ticker)
+    asset = repo.get_by!(Asset, ticker: changeset.data.ticker)
 
     trade = execute_trade(repo, changeset, asset, cash, 1)
     [trade]
   end
 
-  defp sell_stock(changeset, repo) do
+  def sell_stock(changeset, repo \\ Repo) do
     cash  = repo.get_by!(Asset, ticker: "CASH:USD")
-    asset = repo.get_by(Asset, ticker: changeset.data.ticker)
+    asset = repo.get_by!(Asset, ticker: changeset.data.ticker)
 
-    trade = execute_trade(repo, changeset, asset, cash,-1)
+    trade = execute_trade(repo, changeset, asset, cash, -1)
     [trade]
   end
 
