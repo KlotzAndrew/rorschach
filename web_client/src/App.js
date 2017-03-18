@@ -18,14 +18,22 @@ export class App extends Component {
       <div className="App">
         <div>{this.props.portfolio.name}</div>
 
-        <div>Stocks</div>
-        {this.mapAssets(this.props.stock_holdings)}
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
 
-        <div>Cash</div>
-        {this.mapAssets(this.props.cash_holdings)}
+          <tr>
+            <td>Total</td>
+            <td>-</td>
+            <td>{this.totalValue().toFixed(2)}</td>
+          </tr>
 
-        <div>Total</div>
-        {this.totalValue()}
+          {this.mapAssets(this.props.cash_holdings)}
+          {this.mapAssets(this.props.stock_holdings)}
+        </table>
       </div>
     );
   }
@@ -39,11 +47,11 @@ export class App extends Component {
       const asset = assets[holding.id]
 
       if (!asset) return null
-      return <div key={holding.id}>
-        {asset.name}
-        | q: {holding.quantity}
-        | v: {holding.quantity * (holding.price || 1)}
-      </div>
+      return <tr key={holding.id}>
+        <td>{asset.name}</td>
+        <td>{holding.quantity.toFixed(0)}</td>
+        <td>{(holding.quantity * (holding.price || 1)).toFixed(2)}</td>
+      </tr>
     })
   }
 
