@@ -2,9 +2,7 @@ defmodule QuoteStreamUrlTest do
   # use ExUnit.Case, async: true
   use WebServer.ModelCase, async: false
 
-  alias WebServer.QuoteStreamUrl
-  alias WebServer.Repo
-  alias WebServer.Asset
+  alias WebServer.{Asset, Repo, QuoteStreamUrl}
 
   test "parses stream chunk" do
     ticker       = "TSLA"

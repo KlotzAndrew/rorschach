@@ -2,8 +2,7 @@ defmodule WebServer.TickerStream do
   require Logger
   use GenServer
 
-  alias WebServer.TickHandler
-  alias WebServer.QuoteStreamUrl
+  alias WebServer.{TickHandler, QuoteStreamUrl}
 
   # @market_client "http://market_client:5000"
   # @demo_fields "&field=4+10+11"
@@ -27,17 +26,17 @@ defmodule WebServer.TickerStream do
     TickHandler.parse(chunk)
   end
 
-  defp parse_message(%HTTPoison.AsyncStatus{code: code}) do
+  defp parse_message(%HTTPoison.AsyncStatus{code: _code}) do
     Logger.info "AsyncStatus: ---"
   end
 
-  defp parse_message(%HTTPoison.AsyncHeaders{headers: headers}) do
+  defp parse_message(%HTTPoison.AsyncHeaders{headers: _headers}) do
     Logger.info "AsyncHeaders: ---"
   end
 
-  defp parse_message(%HTTPoison.Error{reason: reason}) do
+  defp parse_message(%HTTPoison.Error{reason: _reason}) do
     Logger.info "HTTPoison.Error: ---"
   end
 
-  defp parse_message(msg), do: IO.puts("TickerStream unhandeled message")
+  defp parse_message(_msg), do: IO.puts("TickerStream unhandeled message")
 end
