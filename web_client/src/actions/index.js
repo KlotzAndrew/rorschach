@@ -1,15 +1,15 @@
 import * as types from '../constants/actionTypes';
 import portfolio from '../api/portfolio';
 
-const setPortfolio = (portfolio) => ({
-  type: types.SET_PORTFOLIO,
-  portfolio
+const setPortfolios = (portfolios) => ({
+  type: types.SET_PORTFOLIOS,
+  portfolios
 })
 
-export const getPortfolio = () => dispatch => {
-  portfolio.getPortfolio(portfolio)
+export const getPortfolios = () => dispatch => {
+  portfolio.getPortfolios(portfolio)
     .then(response => {
-      dispatch(setPortfolio(response.data.data))
+      dispatch(setPortfolios(response.data.data))
     })
 }
 

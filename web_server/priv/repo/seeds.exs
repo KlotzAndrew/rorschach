@@ -6,15 +6,26 @@ IO.puts "Seeding database..."
 
 if Repo.aggregate(Portfolio, :count, :id) == 0 do
   Repo.transaction fn ->
-    portfolio = Repo.insert! %Portfolio{
-      name: "Rorschach portfolio"
-    }
     cash = Repo.insert! %Asset{
       name:   "USD",
       ticker: "CASH:USD"
     }
+
+    portfolio_1 = Repo.insert! %Portfolio{
+      name: "Rorschach portfolio"
+    }
     Repo.insert! %Trade{
-      portfolio_id: portfolio.id,
+      portfolio_id: portfolio_1.id,
+      cash_id:      cash.id,
+      cash_total:   1_000_000,
+      type:         "Deposit"
+    }
+
+    portfolio_2 = Repo.insert! %Portfolio{
+      name: "Yung portfolio"
+    }
+    Repo.insert! %Trade{
+      portfolio_id: portfolio_2.id,
       cash_id:      cash.id,
       cash_total:   1_000_000,
       type:         "Deposit"

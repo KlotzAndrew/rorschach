@@ -10,10 +10,10 @@ const initialState = {
 const portfolios = (state = initialState, action) => {
   console.log('action', action)
   switch (action.type) {
-    case types.SET_PORTFOLIO:
+    case types.SET_PORTFOLIOS:
       return {
         ...state,
-        portfolio: action.portfolio
+        portfolios: assignPortfolios(state.portfolios, action.portfolios)
       }
     case types.SET_ASSETS:
       return {
@@ -39,7 +39,12 @@ const portfolios = (state = initialState, action) => {
     default:
       return state
   }
+}
 
+function assignPortfolios(state_portfolios, new_portfolios) {
+  let portfolios = Object.assign({}, state_portfolios);
+  new_portfolios.forEach(function(port) { portfolios[port.id] = port })
+  return portfolios
 }
 
 function updateCashQuantity(state, trade) {

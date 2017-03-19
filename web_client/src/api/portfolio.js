@@ -1,8 +1,8 @@
 import axiosInstance from '../config/axios';
 
 export default{
-  getPortfolio() {
-    return axiosInstance.get('portfolios/1');
+  getPortfolios() {
+    return axiosInstance.get('portfolios');
   },
 
   getAssets() {
