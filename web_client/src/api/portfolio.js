@@ -9,11 +9,12 @@ export default{
     return axiosInstance.get('assets');
   },
 
-  getCashTotals() {
-    return axiosInstance.get('trades/cash_sums/1');
+  getCashHoldings(portfolio_id) {
+    console.log('portfolio_id', portfolio_id)
+    return axiosInstance.get(`trades/cash_holdings/${portfolio_id}`);
   },
 
-  getStockTotals() {
-    return axiosInstance.get('trades/stock_sums/1');
+  getStockHoldings(portfolio_id) {
+    return axiosInstance.get(`trades/stock_holdings/${portfolio_id}`);
   }
 }

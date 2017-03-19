@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getCashHoldings, getStockHoldings } from '../../actions/index';
 
 export class Portfolio extends Component {
   componentWillMount() {
+    this.props.getCashHoldings(this.props.portfolio.id);
+    this.props.getStockHoldings(this.props.portfolio.id);
   }
 
   render() {
+    const { portfolio, cash_holdings, stock_holdings } = this.props;
     return (
       <table>
-        <caption>{this.props.portfolio.name}</caption>
+        <caption>{portfolio.name}</caption>
         <tr>
           <th>Name</th>
           <th>Quantity</th>
@@ -21,8 +25,8 @@ export class Portfolio extends Component {
           <td>{this.totalValue().toFixed(2)}</td>
         </tr>
 
-        {this.mapAssets(this.props.cash_holdings)}
-        {this.mapAssets(this.props.stock_holdings)}
+        {this.mapAssets(cash_holdings)}
+        {this.mapAssets(stock_holdings)}
       </table>
     );
   }
@@ -31,12 +35,12 @@ export class Portfolio extends Component {
     if (!holdings) return null
     const assets = this.props.assets
 
-    return Object.keys(holdings).map(function(key) {
+    return Object.keys(holdings).map(function(key, i) {
       const holding = holdings[key]
       const asset = assets[holding.id]
 
       if (!asset) return null
-      return <tr key={holding.id}>
+      return <tr key={i}>
         <td>{asset.name}</td>
         <td>{holding.quantity.toFixed(0)}</td>
         <td>{(holding.quantity * (holding.price || 1)).toFixed(2)}</td>
@@ -52,8 +56,9 @@ export class Portfolio extends Component {
   }
 
   assetTotal(holdings) {
+    if (!holdings) return 0
     const keys = Object.keys(holdings)
-    if (keys.length === 0) return null
+    if (keys.length === 0) return 0
 
     return keys.reduce(function(acc, key) {
       const holding = holdings[key]
@@ -62,13 +67,14 @@ export class Portfolio extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-
+    stock_holdings: state.portfolios.stock_holdings[ownProps.portfolio.id],
+    cash_holdings: state.portfolios.cash_holdings[ownProps.portfolio.id]
   }
 }
 
 export default connect(
   mapStateToProps,
-  {}
+  { getCashHoldings, getStockHoldings }
 )(Portfolio);

@@ -13,27 +13,29 @@ export const getPortfolios = () => dispatch => {
     })
 }
 
-const setStockHoldings = (assets) => ({
+const setStockHoldings = (portfolioId, assets) => ({
   type: types.SET_STOCK_HOLDINGS,
+  portfolioId,
   assets
 })
 
-const setCashHoldings = (assets) => ({
+const setCashHoldings = (portfolioId, assets) => ({
   type: types.SET_CASH_HOLDINGS,
+  portfolioId,
   assets
 })
 
-export const getCashTotals = (portfolioId) => dispatch => {
-  portfolio.getCashTotals(portfolio)
+export const getCashHoldings = (portfolioId) => dispatch => {
+  portfolio.getCashHoldings(portfolioId)
     .then(response => {
-      dispatch(setCashHoldings(response.data.data))
+      dispatch(setCashHoldings(portfolioId, response.data.data))
     })
 }
 
-export const getStockTotals = (portfolioId) => dispatch => {
-  portfolio.getStockTotals(portfolio)
+export const getStockHoldings = (portfolioId) => dispatch => {
+  portfolio.getStockHoldings(portfolioId)
     .then(response => {
-      dispatch(setStockHoldings(response.data.data))
+      dispatch(setStockHoldings(portfolioId, response.data.data))
     })
 }
 

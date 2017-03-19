@@ -8,14 +8,14 @@ defmodule WebServer.TradeController do
     render(conn, "index.json", trades: trades)
   end
 
-  def cash_sums(conn, %{"portfolio_id" => portfolio_id}) do
-    sums = AssetSums.cash(portfolio_id)
-    render(conn, "asset_sums.json", sums: sums)
+  def cash_holdings(conn, %{"portfolio_id" => portfolio_id}) do
+    holdings = AssetSums.cash(portfolio_id)
+    render(conn, "asset_holdings.json", holdings: holdings)
   end
 
-  def stock_sums(conn, %{"portfolio_id" => portfolio_id}) do
-    sums = AssetSums.stocks(portfolio_id)
-    render(conn, "asset_sums.json", sums: sums)
+  def stock_holdings(conn, %{"portfolio_id" => portfolio_id}) do
+    holdings = AssetSums.stocks(portfolio_id)
+    render(conn, "asset_holdings.json", holdings: holdings)
   end
 
   def create(conn, %{"trade" => trade_params}) do
