@@ -4,7 +4,7 @@ defmodule BrokerTest do
   alias WebServer.{Asset, Broker, Tick}
 
   defmodule Repo do
-    def get_by!(_asset, ticker: ticker) do
+    def get_by!(Asset, ticker: ticker) do
       case ticker do
         "CASH:USD" -> %Asset{id: 1}
         "GOOG" -> %Asset{id: 2}
@@ -14,29 +14,32 @@ defmodule BrokerTest do
 
     def insert!(changeset) do
       if changeset.valid? do
-        # changeset.data
-        "trade_1"
+        changeset.data
       end
     end
   end
 
   test "buys stock" do
+    portfolio_id = 1
     changeset = Tick.changeset(%Tick{
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Broker.buy_stock(changeset, Repo)
 
-    assert ["trade_1"] == result
+    result = Broker.buy_stock(changeset, portfolio_id, Repo)
+
+    assert portfolio_id == result.portfolio_id
   end
 
   test "sells stock" do
+    portfolio_id = 1
     changeset = Tick.changeset(%Tick{
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Broker.sell_stock(changeset, Repo)
 
-    assert ["trade_1"] == result
+    result = Broker.sell_stock(changeset, portfolio_id, Repo)
+
+    assert portfolio_id == result.portfolio_id
   end
 end

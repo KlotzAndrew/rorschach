@@ -11,10 +11,15 @@ defmodule WebServer.TickHandler do
     if Enum.at(tick_values, 0) == "Q" do
       changeset = AtClient.build_tick(tick_values)
 
-      trades = trader.trade(changeset)
-      broadcaster.broadcast_trades(trades)
+      trade_and_broadcast(trader, broadcaster, changeset)
+
       save_tick(changeset, repo)
     end
+  end
+
+  defp trade_and_broadcast(trader, broadcaster, changeset) do
+    trades = trader.trade(changeset)
+    broadcaster.broadcast_trades(trades)
   end
 
   defp save_tick(changeset, repo) do
