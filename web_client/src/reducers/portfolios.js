@@ -43,7 +43,7 @@ const portfolios = (state = initialState, action) => {
 
 function assignPortfolios(state_portfolios, new_portfolios) {
   let portfolios = Object.assign({}, state_portfolios);
-  new_portfolios.forEach(function(port) { portfolios[port.id] = port })
+  new_portfolios.forEach(function(port) { portfolios[port.id] = port.attributes })
   return portfolios
 }
 

@@ -40,6 +40,7 @@ defmodule WebServer.Mixfile do
      {:cowboy, "~> 1.0"},
      {:httpoison, "~> 0.10.0"},
      {:logger_file_backend, "~> 0.0.9"},
+     {:ja_serializer, "~> 0.12.0"},
      {:cors_plug, "~> 1.2"}]
   end
 

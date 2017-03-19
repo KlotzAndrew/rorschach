@@ -7,7 +7,7 @@ defmodule WebServer.TradeControllerTest do
   @invalid_attrs %{}
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, conn: put_req_header(conn, "accept", "application/vnd.api+json")}
   end
 
   test "lists all entries on index", %{conn: conn} do

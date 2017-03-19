@@ -6,7 +6,7 @@ defmodule WebServer.PortfolioControllerTest do
   @invalid_attrs %{name: nil}
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, conn: put_req_header(conn, "accept", "application/vnd.api+json")}
   end
 
   test "lists all entries on index", %{conn: conn} do

@@ -17,6 +17,10 @@ config :web_server, WebServer.Endpoint,
   pubsub: [name: WebServer.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :plug, :mimes, %{
+  "application/vnd.api+json" => ["json-api"]
+}
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
