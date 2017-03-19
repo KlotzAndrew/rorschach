@@ -14,18 +14,20 @@ defmodule TraderTest do
   end
 
   defmodule Repo do
-    def all(_) do
-      [%{id: 88}]
-    end
+    def all(_), do: [%{id: 88, trade_strategy: nil}]
   end
 
+  defmodule RepoRandom do
+    def all(_), do: [%{id: 88, trade_strategy: "random"}]
+  end
+@tag :wip
   test "buys stock" do
     changeset = Tick.changeset(%Tick{
       asset_id:  1,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Broker, Repo, 1)
+    result = Trader.trade(changeset, Broker, RepoRandom, 1)
 
     assert ["buy"] == result
   end
@@ -36,7 +38,7 @@ defmodule TraderTest do
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Broker, Repo, 2)
+    result = Trader.trade(changeset, Broker, RepoRandom, 2)
 
     assert ["sell"]== result
   end
@@ -47,7 +49,7 @@ defmodule TraderTest do
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Broker, Repo, 4)
+    result = Trader.trade(changeset, Broker, Repo)
 
     assert [] == result
   end
