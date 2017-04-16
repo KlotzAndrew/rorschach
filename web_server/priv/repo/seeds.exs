@@ -12,7 +12,7 @@ if Repo.aggregate(Portfolio, :count, :id) == 0 do
     }
 
     portfolio_1 = Repo.insert! %Portfolio{
-      name: "Rorschach portfolio",
+      name:           "Rorschach portfolio",
       trade_strategy: "random"
     }
     Repo.insert! %Trade{
@@ -23,8 +23,8 @@ if Repo.aggregate(Portfolio, :count, :id) == 0 do
     }
 
     portfolio_2 = Repo.insert! %Portfolio{
-      name: "Yung portfolio",
-      trade_strategy: "random"
+      name:           "Yung portfolio",
+      trade_strategy: "last_tick"
     }
     Repo.insert! %Trade{
       portfolio_id: portfolio_2.id,
