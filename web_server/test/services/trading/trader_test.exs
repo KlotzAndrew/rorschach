@@ -20,7 +20,7 @@ defmodule TraderTest do
   defmodule RepoRandom do
     def all(_), do: [%{id: 88, trade_strategy: "random"}]
   end
-@tag :wip
+
   test "buys stock" do
     changeset = Tick.changeset(%Tick{
       asset_id:  1,
