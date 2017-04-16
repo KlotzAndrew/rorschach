@@ -1,5 +1,5 @@
 defmodule WebServer.Trader do
-  alias WebServer.{Broker, Portfolio, Random, Repo, Noop}
+  alias WebServer.{Broker, Portfolio, Random, Repo, Noop, TickStore, LastTick}
 
   def trade(changeset, broker \\ Broker, repo \\ Repo, roll \\ nil) do
     portfolios = repo.all(Portfolio)
@@ -12,7 +12,7 @@ defmodule WebServer.Trader do
 
   defp portfolio_trade(changeset, portfolio, broker, roll) do
     strategy       = trade_strategy(portfolio)
-    recomendations = strategy.calculate_trade(roll)
+    recomendations = strategy.calculate_trade(portfolio, changeset, TickStore, roll)
     perform_trade(changeset, portfolio, broker, recomendations)
   end
 
@@ -27,6 +27,7 @@ defmodule WebServer.Trader do
   defp trade_strategy(portfolio) do
     case portfolio.trade_strategy do
       "random" -> Random
+      "last_tick" -> LastTick
       _ -> Noop
     end
   end
