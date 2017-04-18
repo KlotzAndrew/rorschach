@@ -19,7 +19,7 @@ defmodule WebServer.Mixfile do
   def application do
     [mod: {WebServer, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :httpoison]]
+                    :phoenix_ecto, :postgrex, :httpoison, :kafka_ex]]
   end
 
   # Specifies which paths to compile per environment.
@@ -41,6 +41,7 @@ defmodule WebServer.Mixfile do
      {:httpoison, "~> 0.10.0"},
      {:logger_file_backend, "~> 0.0.9"},
      {:ja_serializer, "~> 0.12.0"},
+     {:kafka_ex, path: "deps/kafka_ex"},
      {:cors_plug, "~> 1.2"}]
   end
 

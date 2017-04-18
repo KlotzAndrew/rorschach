@@ -14,6 +14,7 @@
   "idna": {:hex, :idna, "1.2.0", "ac62ee99da068f43c50dc69acf700e03a62a348360126260e87f2b54eced86b2", [:rebar3], []},
   "inflex": {:hex, :inflex, "1.8.0", "7cfc752ae244b30b42ac9cf4c092771b485bc3424139aba4a933e54be8c63931", [:mix], []},
   "ja_serializer": {:hex, :ja_serializer, "0.12.0", "ba4ec5fc7afa6daba815b5cb2b9bd0de410554ac4f0ed54e954d39decb353ca4", [:mix], [{:inflex, "~> 1.4", [hex: :inflex, optional: false]}, {:plug, "> 1.0.0", [hex: :plug, optional: false]}, {:poison, ">= 1.4.0", [hex: :poison, optional: false]}, {:scrivener, "~> 1.2 or ~> 2.0", [hex: :scrivener, optional: true]}]},
+  "kafka_ex": {:hex, :kafka_ex, "0.6.5", "01c160cbfbe67f6dd60da446b7e7e43f3e51ceb943478f9f7ac425ac0f925b18", [:mix], []},
   "logger_file_backend": {:hex, :logger_file_backend, "0.0.9", "5c2f7d4a28431e695cdf94d191523dbafe609321a67bb654254897f546c393db", [:mix], []},
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},
   "mime": {:hex, :mime, "1.0.1", "05c393850524767d13a53627df71beeebb016205eb43bfbd92d14d24ec7a1b51", [:mix], []},

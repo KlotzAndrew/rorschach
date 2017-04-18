@@ -23,10 +23,28 @@ services:
     depends_on:
       - db
       - market_client_demo
+      - kafka
     command: mix phoenix.server
 
   db:
     image: postgres
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    build: ./kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "kafka"
+      # KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   market_client_demo:
     build: ./market_client_demo
