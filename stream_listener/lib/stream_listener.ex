@@ -1,4 +1,5 @@
 defmodule StreamListener do
+  use Application
   @moduledoc """
   Documentation for StreamListener.
   """
@@ -14,5 +15,9 @@ defmodule StreamListener do
   """
   def hello do
     :world
+  end
+
+  def start(_type, _args) do
+    StreamListener.Supervisor.start_link
   end
 end

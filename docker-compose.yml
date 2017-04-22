@@ -63,3 +63,14 @@ services:
       - "3000:3000"
     links:
       - web_server
+
+  stream_listener:
+    build: ./stream_listener
+    ports:
+      - "4100:4100"
+    volumes:
+      - ./stream_listener:/code
+    depends_on:
+      - market_client_demo
+      - kafka
+    command: mix run
