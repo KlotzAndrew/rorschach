@@ -12,6 +12,7 @@ defmodule WebServer do
       supervisor(WebServer.Repo, []),
       # Start the endpoint when the application starts
       supervisor(WebServer.Endpoint, []),
+      supervisor(KVStore.Supervisor, []),
       # Start your own worker by calling: WebServer.Worker.start_link(arg1, arg2, arg3)
       # worker(WebServer.Worker, [arg1, arg2, arg3]),
     ]
