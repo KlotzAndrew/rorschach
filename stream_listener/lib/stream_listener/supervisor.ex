@@ -7,7 +7,7 @@ defmodule StreamListener.Supervisor do
 
   def init(:ok) do
     children = [
-      worker(StreamListener.Socket, [])
+      worker(StreamListener.Stream, [])
     ]
 
     supervise(children, strategy: :one_for_one)
