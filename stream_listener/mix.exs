@@ -15,7 +15,7 @@ defmodule StreamListener.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger, :httpoison],
+    [extra_applications: [:logger, :httpoison, :kafka_ex],
      mod: {StreamListener, []}]
   end
 
@@ -29,6 +29,9 @@ defmodule StreamListener.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:httpoison, "~> 0.11.1"}]
+    [
+      {:httpoison, "~> 0.11.1"},
+      {:kafka_ex, "~> 0.6.5"}
+    ]
   end
 end

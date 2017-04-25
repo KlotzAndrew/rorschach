@@ -41,8 +41,10 @@ services:
       - zookeeper
     environment:
       KAFKA_ADVERTISED_HOST_NAME: "kafka"
-      # KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_CREATE_TOPICS: "test:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    extra_hosts:
+      - "kafka:0.0.0.0"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -73,4 +75,4 @@ services:
     depends_on:
       - market_client_demo
       - kafka
-    command: mix run
+    command: mix run --no-halt

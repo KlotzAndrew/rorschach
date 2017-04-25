@@ -9,6 +9,11 @@ defmodule StreamListener.Stream do
     {:ok, HTTPoison.get(url(), %{}, [timeout: :infinity, stream_to: self()])}
   end
 
+  def listen do
+    kafka_stream = KafkaEx.stream("test", 0, offset: 0, auto_commit: false)
+    Enum.each(kafka_stream, fn(x) -> IO.inspect(x) end)
+  end
+
   defp url do
     "http://market_client_demo:5020/quoteStream?symbol=NFLX+AMZN"
   end
@@ -19,24 +24,26 @@ defmodule StreamListener.Stream do
   end
 
   defp parse_message(%HTTPoison.AsyncChunk{chunk: chunk}) do
-    IO.puts "AsyncChunk: "
-    IO.inspect chunk
+    KafkaEx.produce("test", 0, chunk)
   end
 
   defp parse_message(%HTTPoison.AsyncStatus{code: code}) do
-    IO.puts "AsyncStatus: ---"
+    IO.puts "AsyncStatus: "
     IO.inspect code
   end
 
   defp parse_message(%HTTPoison.AsyncHeaders{headers: headers}) do
-    IO.puts "AsyncHeaders: ---"
+    IO.puts "AsyncHeaders: "
     IO.inspect headers
   end
 
   defp parse_message(%HTTPoison.Error{reason: reason}) do
-    IO.puts "HTTPoison.Error: ---"
+    IO.puts "HTTPoison.Error: "
     IO.inspect reason
   end
 
-  defp parse_message(_msg), do: IO.puts("TickerStream unhandeled message")
+  defp parse_message(msg) do
+    IO.puts "HTTPoison unhandeled message: "
+    IO.inspect msg
+  end
 end
