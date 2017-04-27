@@ -41,7 +41,7 @@ defmodule WebServer.Mixfile do
      {:httpoison, "~> 0.10.0"},
      {:logger_file_backend, "~> 0.0.9"},
      {:ja_serializer, "~> 0.12.0"},
-     {:kafka_ex, path: "deps/kafka_ex"},
+     {:kafka_ex, "~> 0.6.5"},
      {:cors_plug, "~> 1.2"}]
   end
 

@@ -2,7 +2,7 @@ defmodule WebServer.TickerStream do
   require Logger
   use GenServer
 
-  alias WebServer.{TickHandler, QuoteStreamUrl}
+  alias WebServer.{TickHandler}
 
   # @market_client "http://market_client:5000"
   # @demo_fields "&field=4+10+11"
@@ -12,31 +12,15 @@ defmodule WebServer.TickerStream do
   end
 
   def init(:ok) do
-    url = QuoteStreamUrl.url
-    {:ok, HTTPoison.get!(url, %{}, [timeout: :infinity, stream_to: self()])}
+    {:ok, listen()}
   end
 
-  def handle_info(msg, state) do
-    parse_message(msg)
-    {:noreply, state}
+  def listen do
+    kafka_stream = KafkaEx.stream("test", 0, offset: 0, auto_commit: false)
+    Enum.each(kafka_stream, fn(message) -> TickHandler.parse(message.value) end)
   end
 
-  defp parse_message(%HTTPoison.AsyncChunk{chunk: chunk}) do
-    Logger.info "AsyncChunk: #{chunk}"
-    TickHandler.parse(chunk)
+  def parse_tick(tick) do
+    TickHandler.parse(tick)
   end
-
-  defp parse_message(%HTTPoison.AsyncStatus{code: _code}) do
-    Logger.info "AsyncStatus: ---"
-  end
-
-  defp parse_message(%HTTPoison.AsyncHeaders{headers: _headers}) do
-    Logger.info "AsyncHeaders: ---"
-  end
-
-  defp parse_message(%HTTPoison.Error{reason: _reason}) do
-    Logger.info "HTTPoison.Error: ---"
-  end
-
-  defp parse_message(_msg), do: IO.puts("TickerStream unhandeled message")
 end
