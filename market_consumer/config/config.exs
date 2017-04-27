@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :stream_listener, key: :value
+#     config :market_consumer, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:stream_listener, :key)
+#     Application.get_env(:market_consumer, :key)
 #
 # Or configure a 3rd-party app:
 #

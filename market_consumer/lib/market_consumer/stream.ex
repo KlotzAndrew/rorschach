@@ -1,4 +1,4 @@
-defmodule StreamListener.Stream do
+defmodule MC.Stream do
   use GenServer
 
   def start_link(opts \\ []) do

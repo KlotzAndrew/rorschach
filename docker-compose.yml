@@ -66,12 +66,12 @@ services:
     links:
       - web_server
 
-  stream_listener:
-    build: ./stream_listener
+  market_consumer:
+    build: ./market_consumer
     ports:
       - "4100:4100"
     volumes:
-      - ./stream_listener:/code
+      - ./market_consumer:/code
     depends_on:
       - market_mock
       - kafka

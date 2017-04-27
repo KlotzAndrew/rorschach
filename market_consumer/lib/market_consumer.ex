@@ -1,7 +1,7 @@
-defmodule StreamListener do
+defmodule MC do
   use Application
   @moduledoc """
-  Documentation for StreamListener.
+  Documentation for MC.
   """
 
   @doc """
@@ -9,7 +9,7 @@ defmodule StreamListener do
 
   ## Examples
 
-      iex> StreamListener.hello
+      iex> MC.hello
       :world
 
   """
@@ -18,6 +18,6 @@ defmodule StreamListener do
   end
 
   def start(_type, _args) do
-    StreamListener.Supervisor.start_link
+    MC.Supervisor.start_link
   end
 end

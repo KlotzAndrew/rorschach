@@ -1,4 +1,4 @@
-defmodule StreamListener.Supervisor do
+defmodule MC.Supervisor do
   use Supervisor
 
   def start_link do
@@ -7,7 +7,7 @@ defmodule StreamListener.Supervisor do
 
   def init(:ok) do
     children = [
-      worker(StreamListener.Stream, [])
+      worker(MC.Stream, [])
     ]
 
     supervise(children, strategy: :one_for_one)

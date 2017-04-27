@@ -1,6 +1,6 @@
-defmodule StreamListenerTest do
+defmodule MCTest do
   use ExUnit.Case
-  doctest StreamListener
+  doctest MC
 
   test "the truth" do
     assert 1 + 1 == 2
