@@ -4,7 +4,7 @@ defmodule WebServer.TickerStream do
 
   alias WebServer.{TickHandler}
 
-  # @market_client "http://market_client:5000"
+  # @market "http://market:5000"
   # @demo_fields "&field=4+10+11"
 
   def start_link(opts \\ []) do

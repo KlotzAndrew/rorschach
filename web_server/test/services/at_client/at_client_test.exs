@@ -5,7 +5,7 @@ defmodule AtClientTest do
 
   test "steaming_url returns url" do
     tickers = ["A", "Z"]
-    expected_url = "http://market_client_demo:5020/quoteStream?symbol=A+Z"
+    expected_url = "http://market_mock:5020/quoteStream?symbol=A+Z"
 
     url = AtClient.streaming_url(tickers)
 

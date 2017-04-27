@@ -1,11 +1,11 @@
 version: '2'
 services:
-  market_client:
-    build: ./market_client
+  market:
+    build: ./market
     ports:
       - "5000:5000"
     volumes:
-      - ./market_client:/code
+      - ./market:/code
     command: bash atfeed-httpserver/bin/init.sh
     environment:
       CLIENT_PORT: 5000
@@ -22,7 +22,7 @@ services:
       - ./web_server:/code
     depends_on:
       - db
-      - market_client_demo
+      - market_mock
       - kafka
     command: mix phoenix.server
 
@@ -48,10 +48,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  market_client_demo:
-    build: ./market_client_demo
+  market_mock:
+    build: ./market_mock
     volumes:
-      - ./market_client_demo:/code
+      - ./market_mock:/code
     command: node app.js
     ports:
       - "5020:5020"
@@ -73,6 +73,6 @@ services:
     volumes:
       - ./stream_listener:/code
     depends_on:
-      - market_client_demo
+      - market_mock
       - kafka
     command: mix run --no-halt

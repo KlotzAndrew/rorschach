@@ -15,7 +15,7 @@ defmodule StreamListener.Stream do
   end
 
   defp url do
-    "http://market_client_demo:5020/quoteStream?symbol=NFLX+AMZN"
+    "http://market_mock:5020/quoteStream?symbol=NFLX+AMZN"
   end
 
   def handle_info(msg, state) do

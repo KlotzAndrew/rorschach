@@ -36,7 +36,7 @@ defmodule WebServer.AssetFetcher do
   end
 
   defp request_asset(ticker) do
-    url_base = "http://market_client:5000/quoteData?symbol="
+    url_base = "http://market:5000/quoteData?symbol="
     fields   = "&field=33"
     url      = url_base <> ticker <> fields
 

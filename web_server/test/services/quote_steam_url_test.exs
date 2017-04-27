@@ -6,7 +6,7 @@ defmodule QuoteStreamUrlTest do
 
   test "parses stream chunk" do
     ticker       = "TSLA"
-    expected_url = "http://market_client_demo:5020/quoteStream?symbol=#{ticker}"
+    expected_url = "http://market_mock:5020/quoteStream?symbol=#{ticker}"
 
     # Repo.insert! AssetTrack.changeset(%AssetTrack{}, %{portfolio_id: 1, asset_id: 1, active: true})
     Repo.insert! Asset.changeset(%Asset{}, %{id: 1, ticker: ticker, name: "cool name"})
