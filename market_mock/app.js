@@ -18,7 +18,7 @@ function randomWalk(res, symbol) {
   setInterval(function() {
     value = value * (1 + Math.random()*0.01 - Math.random()*0.01)
     res.write(quote_tick(symbol, value))
-  }, 1000)
+  }, 2500)
 }
 
 // 'Q,TSLA,0,K,Q,280.650000,280.770000,1,5,20170215125426269\n'
