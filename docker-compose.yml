@@ -1,4 +1,4 @@
-version: '2'
+version: '3.1'
 services:
   market:
     build: ./market
@@ -28,11 +28,14 @@ services:
 
   db:
     image: postgres
+    ports:
+      - "5432:5432"
 
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
+
   kafka:
     build: ./kafka
     ports:
@@ -40,6 +43,7 @@ services:
     depends_on:
       - zookeeper
     environment:
+      KAFKA_BROKER_ID: 1
       KAFKA_ADVERTISED_HOST_NAME: "kafka"
       KAFKA_CREATE_TOPICS: "test:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
