@@ -6,7 +6,10 @@ defmodule MC.Stream do
   end
 
   def init(:ok) do
+    IO.puts "Starting stream..."
     {:ok, HTTPoison.get(url(), %{}, [timeout: :infinity, stream_to: self()])}
+    IO.puts "TODO: handle steam failure"
+    {:ok, []}
   end
 
   def listen do
@@ -14,8 +17,10 @@ defmodule MC.Stream do
     Enum.each(kafka_stream, fn(x) -> IO.inspect(x) end)
   end
 
+  defp market_url, do: System.get_env("MARKET_URL") || "market_mock"
+
   defp url do
-    "http://market_mock:5020/quoteStream?symbol=NFLX+AMZN"
+    "http://#{market_url()}:5020/quoteStream?symbol=NFLX+AMZN"
   end
 
   def handle_info(msg, state) do

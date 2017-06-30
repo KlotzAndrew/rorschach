@@ -30,7 +30,7 @@ defmodule MC.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.11.1"},
+      {:httpoison, "~> 0.12.0"},
       {:kafka_ex, "~> 0.6.5"}
     ]
   end
