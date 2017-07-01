@@ -21,26 +21,16 @@ defmodule TraderTest do
     def all(_), do: [%{id: 88, trade_strategy: "random"}]
   end
 
-  test "buys stock" do
+  test "buys or sells a single stock" do
     changeset = Tick.changeset(%Tick{
       asset_id:  1,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Broker, RepoRandom, 1)
+    result = Trader.trade(changeset, Broker, RepoRandom)
+    buy_or_sell = Enum.at(result, 0)
 
-    assert ["buy"] == result
-  end
-
-  test "sells stock" do
-    changeset = Tick.changeset(%Tick{
-      asset_id:  1,
-      ticker:    "GOOG",
-      ask_price: Decimal.new(100),
-    })
-    result = Trader.trade(changeset, Broker, RepoRandom, 2)
-
-    assert ["sell"]== result
+    assert buy_or_sell in ["buy", "sell", nil] == true
   end
 
   test "no trade" do

@@ -1,7 +1,7 @@
 defmodule WebServer.LastTick do
   alias WebServer.{TickStore}
 
-  def calculate_trade(_portfolio, changeset, store \\ TickStore, _roll) do
+  def calculate_trade(_portfolio, changeset, store \\ TickStore) do
     ticks = store.get(changeset)
     last_tick = List.last(ticks)
 

@@ -1,18 +1,17 @@
 defmodule WebServer.Trader do
   alias WebServer.{Broker, Portfolio, Random, Repo, Noop, TickStore, LastTick}
 
-  def trade(changeset, broker \\ Broker, repo \\ Repo, roll \\ nil) do
+  def trade(changeset, broker \\ Broker, repo \\ Repo) do
     portfolios = repo.all(Portfolio)
     Enum.reduce(portfolios, [], fn(p, acc) ->
-      roll = if roll == nil, do: :rand.uniform(4), else: roll
-      trade = portfolio_trade(changeset, p, broker, roll)
+      trade = portfolio_trade(changeset, p, broker)
       if trade, do: acc ++ [trade], else: acc
     end)
   end
 
-  defp portfolio_trade(changeset, portfolio, broker, roll) do
+  defp portfolio_trade(changeset, portfolio, broker) do
     strategy       = trade_strategy(portfolio)
-    recomendations = strategy.calculate_trade(portfolio, changeset, TickStore, roll)
+    recomendations = strategy.calculate_trade(portfolio, changeset, TickStore)
     perform_trade(changeset, portfolio, broker, recomendations)
   end
 

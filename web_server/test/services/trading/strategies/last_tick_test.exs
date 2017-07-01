@@ -26,7 +26,7 @@ defmodule LastTickTest do
       ask_price: Decimal.new(10),
     })
 
-    result = LastTick.calculate_trade(nil, changeset, TickStore, nil)
+    result = LastTick.calculate_trade(nil, changeset, TickStore)
 
     assert result == {:buy, 1}
   end
@@ -38,7 +38,7 @@ defmodule LastTickTest do
       ask_price: Decimal.new(200),
     })
 
-    result = LastTick.calculate_trade(nil, changeset, TickStore, nil)
+    result = LastTick.calculate_trade(nil, changeset, TickStore)
 
     assert result == {:sell, -1}
   end
@@ -51,7 +51,7 @@ defmodule LastTickTest do
       ask_price: Decimal.new(200),
     })
 
-    result = LastTick.calculate_trade(nil, changeset, EmptyStore, nil)
+    result = LastTick.calculate_trade(nil, changeset, EmptyStore)
 
     assert result == nil
   end
