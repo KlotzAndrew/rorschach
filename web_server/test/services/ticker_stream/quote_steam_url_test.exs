@@ -4,14 +4,18 @@ defmodule QuoteStreamUrlTest do
 
   alias WebServer.{Asset, Repo, QuoteStreamUrl}
 
+  defmodule Client do
+    def streaming_url(arr), do: "some_url_" <> Enum.join(arr, "")
+  end
+
   test "parses stream chunk" do
     ticker       = "TSLA"
-    expected_url = "http://market_mock:5020/quoteStream?symbol=#{ticker}"
+    expected_url = "some_url_#{ticker}"
 
     # Repo.insert! AssetTrack.changeset(%AssetTrack{}, %{portfolio_id: 1, asset_id: 1, active: true})
     Repo.insert! Asset.changeset(%Asset{}, %{id: 1, ticker: ticker, name: "cool name"})
 
-    result = QuoteStreamUrl.url
+    result = QuoteStreamUrl.url(Client)
 
     assert expected_url == result
   end

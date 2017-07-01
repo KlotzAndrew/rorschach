@@ -2,7 +2,6 @@ defmodule WebServer.AtClient do
 
   alias WebServer.{Tick}
 
-
   def streaming_url(tickers) do
     base_url = "http://#{market_url()}:5020/quoteStream?symbol="
 

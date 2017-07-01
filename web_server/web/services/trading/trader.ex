@@ -10,24 +10,24 @@ defmodule WebServer.Trader do
   end
 
   defp portfolio_trade(changeset, portfolio, broker) do
-    strategy       = trade_strategy(portfolio)
+    strategy       = strategy(portfolio.trade_strategy)
     recomendations = strategy.calculate_trade(portfolio, changeset, TickStore)
-    perform_trade(changeset, portfolio, broker, recomendations)
+    perform_trade(recomendations, changeset, portfolio, broker)
   end
 
-  defp perform_trade(changeset, portfolio, broker, recomendations) do
-    case recomendations do
-        {:buy, _quantity} -> broker.buy_stock(changeset, portfolio.id)
-        {:sell, _quantity} -> broker.sell_stock(changeset, portfolio.id)
-        _ -> nil
-    end
+  defp perform_trade({:buy, _quantity}, changeset, portfolio, broker) do
+    broker.buy_stock(changeset, portfolio.id)
   end
 
-  defp trade_strategy(portfolio) do
-    case portfolio.trade_strategy do
-      "random" -> Random
-      "last_tick" -> LastTick
-      _ -> Noop
-    end
+  defp perform_trade({:sell, _quantity}, changeset, portfolio, broker) do
+    broker.sell_stock(changeset, portfolio.id)
   end
+
+  defp perform_trade(nil, _changeset, _portfolio, _broker) do
+    nil
+  end
+
+  defp strategy("random"), do: Random
+  defp strategy("last_tick"), do: LastTick
+  defp strategy(_), do: Noop
 end

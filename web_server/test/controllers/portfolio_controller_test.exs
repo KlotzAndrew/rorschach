@@ -17,8 +17,14 @@ defmodule WebServer.PortfolioControllerTest do
   test "shows chosen resource", %{conn: conn} do
     portfolio = Repo.insert! Portfolio.changeset(%Portfolio{}, @valid_attrs)
     conn = get conn, portfolio_path(conn, :show, portfolio)
-    assert json_response(conn, 200)["data"] == %{"id" => portfolio.id,
-      "name" => portfolio.name}
+    assert json_response(conn, 200)["data"] == %{
+      "id" => to_string(portfolio.id),
+      "type" => "portfolio",
+      "attributes" => %{
+        "name" => portfolio.name,
+        "id" => portfolio.id,
+      }
+    }
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

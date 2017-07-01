@@ -3,8 +3,8 @@ defmodule WebServer.QuoteStreamUrl do
 
   alias WebServer.{Asset, AtClient, Repo}
 
-  def url do
-    AtClient.streaming_url(tracking_tickers())
+  def url(client \\ AtClient) do
+    client.streaming_url(tracking_tickers())
   end
 
   # TODO: this assumes all assets are tracked

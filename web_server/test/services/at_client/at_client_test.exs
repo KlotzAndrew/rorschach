@@ -5,7 +5,7 @@ defmodule AtClientTest do
 
   test "steaming_url returns url" do
     tickers = ["A", "Z"]
-    expected_url = "http://market_mock:5020/quoteStream?symbol=A+Z"
+    expected_url = "http://#{market_url()}:5020/quoteStream?symbol=A+Z"
 
     url = AtClient.streaming_url(tickers)
 
@@ -16,4 +16,6 @@ defmodule AtClientTest do
   test "builds tick from tick_values" do
     # TODO
   end
+
+  defp market_url, do: System.get_env("MARKET_URL") || "market_mock"
 end
