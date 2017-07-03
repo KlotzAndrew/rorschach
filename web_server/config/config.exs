@@ -30,7 +30,7 @@ config :logger, :console,
 config :kafka_ex,
   # a list of brokers to connect to in {"HOST", port} format
   brokers: [
-    {System.get_env("KAFKA_HOST") || "kafka", 9092},
+    {"kafka", 9092},
   ],
   # the default consumer group for worker processes, must be a binary (string)
   #    NOTE if you are on Kafka < 0.8.2 or if you want to disable the use of
