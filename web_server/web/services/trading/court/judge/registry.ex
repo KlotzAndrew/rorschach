@@ -1,6 +1,8 @@
 defmodule Court.Registry do
   use GenServer
 
+  alias Court.{Registry, Judge}
+
   @table :judge_registry
 
   def start_link(_opts \\ []) do
@@ -11,10 +13,16 @@ defmodule Court.Registry do
     GenServer.call(__MODULE__, {:add, id, pid})
   end
 
-  def find(id) do
-    result = GenServer.call(__MODULE__, {:find, id})
+  def find(id, judge \\ Judge) do
+    result_set = GenServer.call(__MODULE__, {:find, id})
+    result = Enum.at(result_set, 0)
 
-    Enum.at(result, 0)
+    if result == nil do
+      judge.start_link(id)
+      result = Registry.find(id)
+    end
+
+    result
   end
 
   # Callbacks
