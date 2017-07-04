@@ -1,7 +1,7 @@
 defmodule Court.Judge do
   use GenServer
 
-  alias Court.{Registry}
+  alias Court.{Registry, Arbiter}
 
   # replace with actual module
   defmodule MockBuilder do
@@ -20,6 +20,15 @@ defmodule Court.Judge do
     GenServer.call(pid, {:signals})
   end
 
+  def recommend(portfolio, tick_cs, registry \\ Registry) do
+    {_id, pid} = registry.find(portfolio.id)
+    GenServer.call(pid, {:recommend, tick_cs, Arbiter})
+  end
+
+  def recommend_by_pid(pid, tick_cs, arbiter \\ Arbiter) do
+    GenServer.call(pid, {:recommend, tick_cs, arbiter})
+  end
+
   #  Callbacks
 
   def init({id, builder, registry}) do
@@ -32,5 +41,10 @@ defmodule Court.Judge do
 
   def handle_call({:signals}, _from, state) do
     {:reply, state, state}
+  end
+
+  def handle_call({:recommend, tick_cs, arbiter}, _from, state) do
+    decision = arbiter.decide(state, tick_cs)
+    {:reply, decision, state}
   end
 end

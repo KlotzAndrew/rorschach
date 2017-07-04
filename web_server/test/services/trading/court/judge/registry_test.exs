@@ -1,8 +1,8 @@
 defmodule Court.RegistryTest do
   use ExUnit.Case, async: true
 
-  defmodule MockJudge do
-    def start_link(id) do
+  defmodule MockJudgeSupervisor do
+    def start_judge(id) do
       {id, "pid"}
     end
   end
@@ -17,7 +17,7 @@ defmodule Court.RegistryTest do
 
   test "find adds judge" do
     id = 2
-    {return_id, _pid} = Court.Registry.find(id, MockJudge)
+    {return_id, _pid} = Court.Registry.find(id, MockJudgeSupervisor)
 
     assert return_id == id
   end

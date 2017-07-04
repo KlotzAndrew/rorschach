@@ -1,7 +1,7 @@
 defmodule Court.Registry do
   use GenServer
 
-  alias Court.{Registry, Judge}
+  alias Court.{Registry, JudgeSupervisor}
 
   @table :judge_registry
 
@@ -13,12 +13,12 @@ defmodule Court.Registry do
     GenServer.call(__MODULE__, {:add, id, pid})
   end
 
-  def find(id, judge \\ Judge) do
+  def find(id, supervisor \\ JudgeSupervisor) do
     result_set = GenServer.call(__MODULE__, {:find, id})
     result = Enum.at(result_set, 0)
 
     if result == nil do
-      judge.start_link(id)
+      supervisor.start_judge(id)
       result = Registry.find(id)
     end
 
