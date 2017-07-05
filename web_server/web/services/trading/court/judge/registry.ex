@@ -13,13 +13,13 @@ defmodule Court.Registry do
     GenServer.call(__MODULE__, {:add, id, pid})
   end
 
-  def find(id, supervisor \\ JudgeSupervisor) do
+  def find(id, supervisor \\ JudgeSupervisor, registry \\ Registry) do
     result_set = GenServer.call(__MODULE__, {:find, id})
     result = Enum.at(result_set, 0)
 
     if result == nil do
       supervisor.start_judge(id)
-      result = Registry.find(id)
+      result = registry.find(id)
     end
 
     result

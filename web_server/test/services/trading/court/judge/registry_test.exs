@@ -7,6 +7,12 @@ defmodule Court.RegistryTest do
     end
   end
 
+  defmodule MockRegistry do
+    def find(id) do
+      {id, "pid"}
+    end
+  end
+
   test "find returns existing judge" do
     id = 1
     pid = "some pid!"
@@ -17,7 +23,7 @@ defmodule Court.RegistryTest do
 
   test "find adds judge" do
     id = 2
-    {return_id, _pid} = Court.Registry.find(id, MockJudgeSupervisor)
+    {return_id, _pid} = Court.Registry.find(id, MockJudgeSupervisor, MockRegistry)
 
     assert return_id == id
   end

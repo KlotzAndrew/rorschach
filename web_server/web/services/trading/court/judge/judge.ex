@@ -1,19 +1,12 @@
 defmodule Court.Judge do
   use GenServer
 
-  alias Court.{Registry, Arbiter}
+  alias Court.{Registry, Arbiter, Signals}
 
-  # replace with actual module
-  defmodule MockBuilder do
-    def setup(id) do
-      %{"GOOG": %{"entry": 100, "exit": 200, "id": id}}
-    end
-  end
-
-  def start_link(id, builder \\ MockBuilder, registry \\ Registry) do
+  def start_link(id, signals \\ Signals, registry \\ Registry) do
     name = String.to_atom("judge_" <> Integer.to_string(id))
 
-    GenServer.start_link(__MODULE__, {id, builder, registry}, name: name)
+    GenServer.start_link(__MODULE__, {id, signals, registry}, name: name)
   end
 
   def signals(pid) do
@@ -31,8 +24,8 @@ defmodule Court.Judge do
 
   #  Callbacks
 
-  def init({id, builder, registry}) do
-    signals = builder.setup(id)
+  def init({id, signals, registry}) do
+    signals = signals.calculate(id)
 
     registry.add(id, self())
 

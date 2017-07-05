@@ -1,10 +1,8 @@
 defmodule Court.JudgeTest do
   use ExUnit.Case, async: true
 
-  alias WebServer.{Portfolio}
-
-  defmodule MockBuilder do
-    def setup(id) do
+  defmodule MockSignals do
+    def calculate(id) do
       %{"GOOG": %{"entry": 100, "exit": 200, "id": id}}
     end
   end
@@ -24,7 +22,7 @@ defmodule Court.JudgeTest do
   test "setup returns signals" do
     Process.register self(), :judge_test_setup
 
-    {:ok, judge} = Court.Judge.start_link(4, MockBuilder, MockRegistry)
+    {:ok, judge} = Court.Judge.start_link(4, MockSignals, MockRegistry)
     expected_signals = %{"GOOG": %{"entry": 100, "exit": 200, "id": 4}}
 
     assert Court.Judge.signals(judge) == expected_signals
@@ -34,7 +32,7 @@ defmodule Court.JudgeTest do
   test "recommend returns recomendation" do
     Process.register self(), :judge_test_setup
 
-    {:ok, judge} = Court.Judge.start_link(5, MockBuilder, MockRegistry)
+    {:ok, judge} = Court.Judge.start_link(5, MockSignals, MockRegistry)
 
     recomendation = Court.Judge.recommend_by_pid(judge, "tick_cs", MockArbiter)
     assert recomendation == "decision_123"
