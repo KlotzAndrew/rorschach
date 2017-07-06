@@ -3,7 +3,7 @@ defmodule WebServer.DayBarTest do
 
   alias WebServer.DayBar
 
-  @valid_attrs %{asset_id: 1, at_timestamp: 20170703000000}
+  @valid_attrs %{asset_id: 1, at_timestamp: Ecto.DateTime.utc}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

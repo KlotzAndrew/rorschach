@@ -28,7 +28,7 @@ defmodule WebServer.AtClient do
 
   # YYYY_MM_DD_HH_MM_SS_mmm
   # 2017_02_15_12_54_26_269
-  defp datetime(string) do
+  def datetime(string) do
     {_status, time} = Ecto.DateTime.cast(%{
       year:        String.slice(string, 0..3),
       month:       String.slice(string, 4..5),

@@ -1,15 +1,21 @@
 defmodule AtClient.DayBars do
   use Timex
 
-  alias WebServer.{DayBar}
+  alias WebServer.{AtClient}
+  alias WebServer.{Repo, DayBar}
 
-  def fetch(asset, days, client \\ HTTPoison) do
+  def fetch(asset, days, repo \\ Repo, client \\ HTTPoison) do
     begin_time = get_begin(days)
     end_time = get_end(days)
 
     build_url(asset.ticker, begin_time, end_time)
       |> make_request(client)
       |> body_to_bars(asset)
+      |> save_bars(repo)
+  end
+
+  defp save_bars(bars, repo) do
+    Enum.map(bars, fn(b) -> repo.insert(b) end)
   end
 
   defp make_request(url, client) do
@@ -22,7 +28,10 @@ defmodule AtClient.DayBars do
   end
 
   defp build_bars(arr, asset) do
-    Enum.reduce(arr, [], fn(str, acc) -> acc ++ [parse_bar(str, asset)] end)
+    Enum.reduce(arr, [], fn(str, acc) ->
+      bar = parse_bar(str, asset)
+      if bar, do: acc ++ [bar], else: acc
+    end)
   end
 
   defp parse_bar(string, asset) do
@@ -30,7 +39,7 @@ defmodule AtClient.DayBars do
 
     DayBar.changeset(%DayBar{}, %{
       asset_id: asset.id,
-      at_timestamp: Enum.at(values, 0),
+      at_timestamp: AtClient.datetime(Enum.at(values, 0)),
       open_price: Decimal.new(Enum.at(values, 1)),
       high_price: Decimal.new(Enum.at(values, 2)),
       low_price: Decimal.new(Enum.at(values, 3)),
