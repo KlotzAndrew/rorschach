@@ -11,11 +11,12 @@ defmodule AtClient.DayBars do
     build_url(asset.ticker, begin_time, end_time)
       |> make_request(client)
       |> body_to_bars(asset)
-      |> save_bars(repo)
+      |> save_bars(repo) # this isn't really needed
   end
 
   defp save_bars(bars, repo) do
     Enum.map(bars, fn(b) -> repo.insert(b) end)
+    bars
   end
 
   defp make_request(url, client) do
@@ -36,7 +37,13 @@ defmodule AtClient.DayBars do
 
   defp parse_bar(string, asset) do
     values = String.split(string, ",")
+    case Integer.parse(Enum.at(values, 0)) do
+      {0, ""} -> nil
+      {_, _ } -> build_changeset(asset, values)
+    end
+  end
 
+  defp build_changeset(asset, values) do
     DayBar.changeset(%DayBar{}, %{
       asset_id: asset.id,
       at_timestamp: AtClient.datetime(Enum.at(values, 0)),

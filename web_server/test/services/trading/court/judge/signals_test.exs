@@ -1,7 +1,7 @@
 defmodule Court.SignalsTest do
   use ExUnit.Case, async: true
 
-  alias WebServer.{Asset}
+  alias WebServer.{Asset, DayBar}
 
   defmodule MockRepo do
     def all(Asset) do
@@ -12,11 +12,23 @@ defmodule Court.SignalsTest do
     end
   end
 
+  defmodule MockDayBars do
+    def fetch(_, _) do
+      [
+        DayBar.changeset(%DayBar{}, %{high_price: Decimal.new(30)}),
+        DayBar.changeset(%DayBar{}, %{high_price: Decimal.new(110)}),
+        DayBar.changeset(%DayBar{}, %{high_price: Decimal.new(130)}),
+        DayBar.changeset(%DayBar{}, %{high_price: Decimal.new(130)})
+      ]
+    end
+  end
+
   test "calculate includes created_at time" do
     deps = %{
       repo: MockRepo,
       portfolio: Portfolio,
-      asset: Asset
+      asset: Asset,
+      day_bars: MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -27,7 +39,8 @@ defmodule Court.SignalsTest do
     deps = %{
       repo: MockRepo,
       portfolio: Portfolio,
-      asset: Asset
+      asset: Asset,
+      day_bars: MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -38,10 +51,11 @@ defmodule Court.SignalsTest do
     deps = %{
       repo: MockRepo,
       portfolio: Portfolio,
-      asset: Asset
+      asset: Asset,
+      day_bars: MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
-    expected = %{"enter" => 72.0, "exit" => 88.0, "traded" => false}
+    expected = %{"enter" => Decimal.new(90.0), "exit" => Decimal.new(110.0), "traded" => false}
 
     assert signals["signals"]["A1"] == expected
   end

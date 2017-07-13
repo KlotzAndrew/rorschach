@@ -36,8 +36,6 @@ defmodule AtClient.DarBarsTest do
       volume: "20232975"
     })
 
-    expected = [{:ok, changeset.params}]
-
-    assert DayBars.fetch(asset, days, MockRepo, MockClient) == expected
+    assert DayBars.fetch(asset, days, MockRepo, MockClient) == [changeset]
   end
 end
