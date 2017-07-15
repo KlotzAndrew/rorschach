@@ -27,13 +27,13 @@ defmodule AtClient.DarBarsTest do
     days = 2
     asset = %Asset{name: "asset_1", ticker: "MSFT", id: 2}
     changeset = DayBar.changeset(%DayBar{}, %{
-      asset_id: asset.id,
+      asset_id:     asset.id,
       at_timestamp: AtClient.datetime("20170601000000"),
-      open_price: Decimal.new(70.2),
-      high_price: Decimal.new(70.6),
-      low_price: Decimal.new(69.4),
-      close_price: Decimal.new(70.1),
-      volume: "20232975"
+      open_price:   Decimal.new(70.2),
+      high_price:   Decimal.new(70.6),
+      low_price:    Decimal.new(69.4),
+      close_price:  Decimal.new(70.1),
+      volume:       "20232975"
     })
 
     assert DayBars.fetch(asset, days, MockRepo, MockClient) == [changeset]

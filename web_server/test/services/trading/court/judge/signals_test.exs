@@ -25,10 +25,10 @@ defmodule Court.SignalsTest do
 
   test "calculate includes created_at time" do
     deps = %{
-      repo: MockRepo,
+      repo:      MockRepo,
       portfolio: Portfolio,
-      asset: Asset,
-      day_bars: MockDayBars
+      asset:     Asset,
+      day_bars:  MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -37,10 +37,10 @@ defmodule Court.SignalsTest do
 
   test "calculate adds signals for each assets" do
     deps = %{
-      repo: MockRepo,
+      repo:      MockRepo,
       portfolio: Portfolio,
-      asset: Asset,
-      day_bars: MockDayBars
+      asset:     Asset,
+      day_bars:  MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -49,13 +49,17 @@ defmodule Court.SignalsTest do
 
   test "calculate adds enter and exit" do
     deps = %{
-      repo: MockRepo,
+      repo:      MockRepo,
       portfolio: Portfolio,
-      asset: Asset,
-      day_bars: MockDayBars
+      asset:     Asset,
+      day_bars:  MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
-    expected = %{"enter" => Decimal.new(90.0), "exit" => Decimal.new(110.0), "traded" => false}
+    expected = %{
+      "enter"  => Decimal.new(90.0),
+      "exit"   => Decimal.new(110.0),
+      "traded" => false
+    }
 
     assert signals["signals"]["A1"] == expected
   end

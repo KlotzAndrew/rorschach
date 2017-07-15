@@ -45,13 +45,13 @@ defmodule AtClient.DayBars do
 
   defp build_changeset(asset, values) do
     DayBar.changeset(%DayBar{}, %{
-      asset_id: asset.id,
+      asset_id:     asset.id,
       at_timestamp: AtClient.datetime(Enum.at(values, 0)),
-      open_price: Decimal.new(Enum.at(values, 1)),
-      high_price: Decimal.new(Enum.at(values, 2)),
-      low_price: Decimal.new(Enum.at(values, 3)),
-      close_price: Decimal.new(Enum.at(values, 4)),
-      volume: Enum.at(values, 5)
+      open_price:   Decimal.new(Enum.at(values, 1)),
+      high_price:   Decimal.new(Enum.at(values, 2)),
+      low_price:    Decimal.new(Enum.at(values, 3)),
+      close_price:  Decimal.new(Enum.at(values, 4)),
+      volume:       Enum.at(values, 5)
     })
   end
 

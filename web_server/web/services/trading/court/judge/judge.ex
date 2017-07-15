@@ -37,7 +37,7 @@ defmodule Court.Judge do
   end
 
   def handle_call({:recommend, tick_cs, arbiter}, _from, state) do
-    decision = arbiter.decide(state, tick_cs)
+    decision = arbiter.decide(state["signals"], tick_cs)
     {:reply, decision, state}
   end
 end
