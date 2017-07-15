@@ -4,6 +4,7 @@ defmodule Court.Arbiter do
     calc(signals, tick_cs)
   end
 
+  defp calc(nil, _tick_cs), do: nil
   defp calc(%{"enter" => nil, "exit" => _ex, "traded" => _tr}, _tick_cs), do: nil
   defp calc(%{"enter" => _ent, "exit" => nil, "traded" => _tr}, _tick_cs), do: nil
   defp calc(%{"enter" => nil, "exit" => nil, "traded" => _tr}, _tick_cs), do: nil

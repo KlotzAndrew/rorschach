@@ -17,29 +17,35 @@ defmodule TraderTest do
     def all(_), do: [%{id: 88, trade_strategy: nil}]
   end
 
-  defmodule RepoRandom do
-    def all(_), do: [%{id: 88, trade_strategy: "random"}]
+  defmodule JudgeMock do
+    def recommend(_portfolio, tick_cs) do
+      cond do
+        tick_cs.params["asset_id"] == 1 -> {:buy, 1}
+        tick_cs.params["asset_id"] == 2 -> {:sell, -1}
+        tick_cs.params["asset_id"] == 3 -> nil
+      end
+    end
   end
 
   test "buys or sells a single stock" do
-    changeset = Tick.changeset(%Tick{
+    changeset = Tick.changeset(%Tick{}, %{
       asset_id:  1,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Broker, RepoRandom)
+    result = Trader.trade(changeset, Broker, Repo, JudgeMock)
     buy_or_sell = Enum.at(result, 0)
 
     assert buy_or_sell in ["buy", "sell", nil] == true
   end
 
   test "no trade" do
-    changeset = Tick.changeset(%Tick{
-      asset_id:  1,
+    changeset = Tick.changeset(%Tick{}, %{
+      asset_id:  3,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
     })
-    result = Trader.trade(changeset, Broker, Repo)
+    result = Trader.trade(changeset, Broker, Repo, JudgeMock)
 
     assert [] == result
   end
