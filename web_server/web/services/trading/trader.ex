@@ -6,6 +6,7 @@ defmodule WebServer.Trader do
     portfolios = repo.all(Portfolio)
     Enum.reduce(portfolios, [], fn(p, acc) ->
       trade = portfolio_trade(tick_cs, p, broker, judge)
+      notify_trade(trade, tick_cs, p, judge)
       if trade, do: acc ++ [trade], else: acc
     end)
   end
@@ -25,5 +26,10 @@ defmodule WebServer.Trader do
 
   defp perform_trade(nil, _changeset, _portfolio, _broker) do
     nil
+  end
+
+  defp notify_trade(nil, _tick, _portfolio, _judge), do: nil
+  defp notify_trade(trade, tick, portfolio, judge) do
+    judge.hear_trade(portfolio, trade, tick)
   end
 end

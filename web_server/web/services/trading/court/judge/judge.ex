@@ -22,6 +22,15 @@ defmodule Court.Judge do
     GenServer.call(pid, {:recommend, tick_cs, arbiter})
   end
 
+  def hear_trade(portfolio, trade, tick, registry \\ Registry) do
+    {_id, pid} = registry.find(portfolio.id)
+    GenServer.call(pid, {:hear_trade, trade, tick})
+  end
+
+  def hear_trade_by_pid(pid, trade, tick, arbiter \\ Arbiter) do
+    GenServer.call(pid, {:hear_trade, trade, tick, arbiter})
+  end
+
   #  Callbacks
 
   def init({id, signals, registry}) do
@@ -39,5 +48,10 @@ defmodule Court.Judge do
   def handle_call({:recommend, tick_cs, arbiter}, _from, state) do
     decision = arbiter.decide(state["signals"], tick_cs)
     {:reply, decision, state}
+  end
+
+  def handle_call({:hear_trade, trade, tick, arbiter}, _from, state) do
+    new_state = arbiter.new_trade_info(state["signals"], trade, tick)
+    {:reply, trade, new_state}
   end
 end

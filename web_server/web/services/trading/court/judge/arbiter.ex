@@ -4,6 +4,13 @@ defmodule Court.Arbiter do
     calc(signals, tick_cs)
   end
 
+  def new_trade_info(all_signals, trade, tick_cs) do
+    put_in(
+      all_signals,
+      [tick_cs.params["ticker"], "traded"], trade.quantity > 0
+    )
+  end
+
   defp calc(nil, _tick_cs), do: nil
   defp calc(%{"enter" => nil, "exit" => _ex, "traded" => _tr}, _tick_cs), do: nil
   defp calc(%{"enter" => _ent, "exit" => nil, "traded" => _tr}, _tick_cs), do: nil

@@ -25,6 +25,15 @@ defmodule TraderTest do
         tick_cs.params["asset_id"] == 3 -> nil
       end
     end
+
+    def hear_trade(_portfolio, _trade, tick_cs) do
+      cond do
+        tick_cs.params["asset_id"] == 1 -> nil
+        tick_cs.params["asset_id"] == 2 -> send :trader_test_setup, :new_trade_info
+        tick_cs.params["asset_id"] == 3 -> nil
+      end
+
+    end
   end
 
   test "buys or sells a single stock" do
@@ -48,5 +57,17 @@ defmodule TraderTest do
     result = Trader.trade(changeset, Broker, Repo, JudgeMock)
 
     assert [] == result
+  end
+
+  test "notifies judge of trade" do
+    Process.register self(), :trader_test_setup
+    changeset = Tick.changeset(%Tick{}, %{
+      asset_id:  2,
+      ticker:    "GOOG",
+      ask_price: Decimal.new(100),
+    })
+    Trader.trade(changeset, Broker, Repo, JudgeMock)
+
+    assert_receive :new_trade_info
   end
 end
