@@ -9,8 +9,11 @@ export default{
     return axiosInstance.get('assets');
   },
 
+  getTrades() {
+    return axiosInstance.get('trades');
+  },
+
   getCashHoldings(portfolio_id) {
-    console.log('portfolio_id', portfolio_id)
     return axiosInstance.get(`trades/cash_holdings/${portfolio_id}`);
   },
 

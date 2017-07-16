@@ -13,6 +13,18 @@ export const getPortfolios = () => dispatch => {
     })
 }
 
+const setTrades = trades => ({
+  type: types.SET_TRADES,
+  trades
+})
+
+export const getTrades = () => dispatch => {
+  portfolio.getTrades()
+    .then(response => {
+      dispatch(setTrades(response.data.data))
+    })
+}
+
 const setStockHoldings = (portfolioId, assets) => ({
   type: types.SET_STOCK_HOLDINGS,
   portfolioId,

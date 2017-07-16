@@ -1,10 +1,12 @@
 import * as types from '../constants/actionTypes';
+import R from 'ramda';
 
 const initialState = {
   portfolio: {},
   stock_holdings: {},
   cash_holdings: {},
-  assets: {}
+  assets: {},
+  trade: []
 }
 
 const portfolios = (state = initialState, action) => {
@@ -34,7 +36,13 @@ const portfolios = (state = initialState, action) => {
       return {
         ...state,
         stock_holdings: updateAssetQuantity(state, action.trade),
-        cash_holdings: updateCashQuantity(state, action.trade)
+        cash_holdings: updateCashQuantity(state, action.trade),
+        trades: R.append(action.trade, state.trades)
+      }
+    case types.SET_TRADES:
+      return {
+        ...state,
+        trades: R.clone(action.trades)
       }
     default:
       return state

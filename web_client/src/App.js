@@ -4,6 +4,7 @@ import {
   getPortfolios, getAssets
 } from './actions/index';
 import Portfolio from './containers/portfolio'
+import Trades from './containers/trades'
 import './App.css';
 
 export class App extends Component {
@@ -15,7 +16,13 @@ export class App extends Component {
   render() {
     return (
       <div className="App">
+        <div>Rorschack</div>
+
+        <div>Portfolios</div>
         {this.mapPortfolios(this.props.portfolios)}
+
+        <div>Trades</div>
+        <Trades />
       </div>
     );
   }
