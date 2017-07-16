@@ -20,7 +20,13 @@ defmodule WebServer.TradeControllerTest do
     conn = get conn, trade_path(conn, :show, trade)
     assert json_response(conn, 200)["data"] == %{"id" => trade.id,
       "quantity" => trade.quantity,
-      "price" => Decimal.to_string(trade.price)}
+      "price" => Decimal.to_string(trade.price),
+      "cash_id" => trade.cash_id,
+      "asset_id" => trade.asset_id,
+      "portfolio_id" => trade.portfolio_id,
+      "type" => trade.type,
+      "inserted_at" => NaiveDateTime.to_iso8601(trade.inserted_at)
+    }
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

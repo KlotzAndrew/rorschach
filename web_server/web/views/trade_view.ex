@@ -10,9 +10,14 @@ defmodule WebServer.TradeView do
   end
 
   def render("trade.json", %{trade: trade}) do
-    %{id: trade.id,
-      quantity: trade.quantity,
-      price: trade.price}
+    %{id:           trade.id,
+      quantity:     trade.quantity,
+      portfolio_id: trade.portfolio_id,
+      asset_id:     trade.asset_id,
+      cash_id:      trade.cash_id,
+      type:         trade.type,
+      inserted_at:  trade.inserted_at,
+      price:        trade.price}
   end
 
   def render("asset_holdings.json", %{holdings: holdings}) do
