@@ -1,10 +1,15 @@
 defmodule WebServer.TradeController do
   use WebServer.Web, :controller
+  import Ecto.Query
 
   alias WebServer.{Trade, AssetSums}
 
   def index(conn, _params) do
-    trades = Repo.all(Trade)
+    query = from t in Trade,
+      order_by: [desc: t.inserted_at],
+      limit: 10
+
+    trades = Repo.all(query)
     render(conn, "index.json", trades: trades)
   end
 
