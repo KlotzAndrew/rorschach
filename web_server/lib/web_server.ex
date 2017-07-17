@@ -25,7 +25,7 @@ defmodule WebServer do
           children
         _ ->
           IO.puts "TickerStream starting..."
-          children ++ [worker(WebServer.TickerStream, [])]
+          children ++ [worker(WebServer.MarketConsumer, [])]
       end
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

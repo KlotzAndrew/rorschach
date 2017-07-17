@@ -31,26 +31,26 @@ services:
     ports:
       - "5432:5432"
 
-  zookeeper:
-    image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
-
-  kafka:
-    build: ./kafka
-    ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ADVERTISED_HOST_NAME: "kafka"
-      KAFKA_CREATE_TOPICS: "test:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    extra_hosts:
-      - "kafka:0.0.0.0"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+  # zookeeper:
+  #   image: wurstmeister/zookeeper
+  #   ports:
+  #     - "2181:2181"
+  #
+  # kafka:
+  #   build: ./kafka
+  #   ports:
+  #     - "9092:9092"
+  #   depends_on:
+  #     - zookeeper
+  #   environment:
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_ADVERTISED_HOST_NAME: "kafka"
+  #     KAFKA_CREATE_TOPICS: "test:1:1"
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #   extra_hosts:
+  #     - "kafka:0.0.0.0"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
 
   market_mock:
     build: ./market_mock
@@ -70,13 +70,13 @@ services:
     links:
       - web_server
 
-  market_consumer:
-    build: ./market_consumer
-    ports:
-      - "4100:4100"
-    volumes:
-      - ./market_consumer:/code
-    depends_on:
-      - market_mock
-      - kafka
-    command: mix run --no-halt
+  # market_consumer:
+  #   build: ./market_consumer
+  #   ports:
+  #     - "4100:4100"
+  #   volumes:
+  #     - ./market_consumer:/code
+  #   depends_on:
+  #     - market_mock
+  #     - kafka
+  #   command: mix run --no-halt
