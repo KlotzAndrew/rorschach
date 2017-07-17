@@ -13,7 +13,7 @@ defmodule WebServer.TickHandler do
 
       trade_and_broadcast(trader, broadcaster, changeset, store)
 
-      save_tick(changeset, repo)
+      save_tick(changeset, repo, broadcaster)
     end
   end
 
@@ -24,7 +24,8 @@ defmodule WebServer.TickHandler do
     broadcaster.broadcast_trades(trades)
   end
 
-  defp save_tick(changeset, repo) do
+  defp save_tick(changeset, repo, broadcaster) do
+    broadcaster.broadcast_tick(changeset.data)
     repo.insert!(changeset)
   end
 end

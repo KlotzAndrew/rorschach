@@ -11,7 +11,7 @@ defmodule WebServer.MarketConsumer do
     IO.puts "Starting stream..."
     {:ok, HTTPoison.get(url(), %{}, [timeout: :infinity, stream_to: self()])}
     IO.puts "TODO: handle steam failure"
-    :timer.send_after(2_000, :consumer_failed)
+    # :timer.send_after(10_000, :consumer_failed)
     {:ok, []}
   end
 

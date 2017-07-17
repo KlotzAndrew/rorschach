@@ -23,6 +23,10 @@ defmodule TickHandlerTest do
     def broadcast_trades(_trades) do
       send self(), :broadcasted
     end
+
+    def broadcast_tick(_trades) do
+      send self(), :broadcasted_tick
+    end
   end
 
   defmodule TickStore do
@@ -43,5 +47,6 @@ defmodule TickHandlerTest do
     assert_receive :traded
     assert_receive :broadcasted
     assert_receive :stored
+    assert_receive :broadcasted_tick
   end
 end
