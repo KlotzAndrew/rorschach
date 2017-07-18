@@ -10,8 +10,7 @@ defmodule WebServer.MarketConsumer do
   def init(:ok) do
     IO.puts "Starting stream..."
     {:ok, HTTPoison.get(url(), %{}, [timeout: :infinity, stream_to: self()])}
-    IO.puts "TODO: handle steam failure"
-    # :timer.send_after(10_000, :consumer_failed)
+    :timer.send_after(2_000, :consumer_failed)
     {:ok, []}
   end
 
@@ -20,13 +19,15 @@ defmodule WebServer.MarketConsumer do
     Enum.each(kafka_stream, fn(x) -> IO.inspect(x) end)
   end
 
-  defp market_url, do: System.get_env("MARKET_URL") || "market_mock"
+  # defp market_url, do: System.get_env("MARKET_URL")
 
   defp url do
-    "http://#{market_url()}:5020/quoteStream?symbol=NFLX+AMZN"
+    # "#{market_url()}:5000/quoteStream?symbol=NFLX+AMZN"
+    "http://market_mock:5020/quoteStream?symbol=NFLX+AMZN"
   end
 
   def handle_info(:consumer_failed, state) do
+    IO.inspect url(), label: "TODO: handle consumer_failed"
     {:stop, :timeout, state}
   end
 

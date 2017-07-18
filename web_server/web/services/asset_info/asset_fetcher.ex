@@ -35,10 +35,10 @@ defmodule WebServer.AssetFetcher do
     Enum.join(name_parts, ",")
   end
 
-  defp market_url, do: System.get_env("MARKET_URL") || "market"
+  defp market_url, do: System.get_env("MARKET_URL")
 
   defp request_asset(ticker) do
-    url_base = "http://#{market_url()}:5000/quoteData?symbol="
+    url_base = "#{market_url()}:5000/quoteData?symbol="
     fields   = "&field=33"
     url      = url_base <> ticker <> fields
 

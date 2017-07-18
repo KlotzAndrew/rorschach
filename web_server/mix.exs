@@ -19,7 +19,7 @@ defmodule WebServer.Mixfile do
   def application do
     [mod: {WebServer, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :httpoison, :kafka_ex, :timex]]
+                    :phoenix_ecto, :postgrex, :httpoison, :timex]]
   end
 
   # Specifies which paths to compile per environment.

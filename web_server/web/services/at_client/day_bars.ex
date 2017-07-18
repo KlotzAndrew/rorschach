@@ -75,8 +75,10 @@ defmodule AtClient.DayBars do
   defp i_2(int) when int < 10, do: "0#{int}"
   defp i_2(int), do: int
 
+  defp market_url, do: System.get_env("MARKET_URL")
+
   defp build_url(ticker, begin_time, end_time) do
-    "http://192.168.99.100:5000/barData?symbol=" <> ticker
+    "#{market_url()}:5000/barData?symbol=" <> ticker
       <> "&historyType=1&beginTime=" <> begin_time
       <> "&endTime=" <> end_time
   end

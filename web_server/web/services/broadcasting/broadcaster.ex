@@ -17,7 +17,7 @@ defmodule WebServer.Broadcaster do
   defp tick_payload(tick) do
     %{
       "time"      => tick.time,
-      "ask_prick" => tick.ask_price,
+      "ask_price" => tick.ask_price,
       "ticker"    => tick.ticker,
       "asset_id"  => tick.asset_id
     }
