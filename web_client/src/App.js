@@ -5,6 +5,7 @@ import {
 } from './actions/index';
 import Portfolio from './containers/portfolio'
 import Trades from './containers/trades'
+import Ticks from './containers/ticks'
 import './App.css';
 
 export class App extends Component {
@@ -23,6 +24,9 @@ export class App extends Component {
 
         <div>Trades</div>
         <Trades />
+
+        <div>Ticks</div>
+        <Ticks />
       </div>
     );
   }

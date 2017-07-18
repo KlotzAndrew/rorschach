@@ -6,7 +6,8 @@ const initialState = {
   stock_holdings: {},
   cash_holdings: {},
   assets: {},
-  trade: []
+  trade: [],
+  ticks: {},
 }
 
 const portfolios = (state = initialState, action) => {
@@ -43,6 +44,14 @@ const portfolios = (state = initialState, action) => {
       return {
         ...state,
         trades: R.clone(action.trades)
+      }
+    case types.ADD_TICK:
+      return {
+        ...state,
+        ticks: {
+          ...state.ticks,
+          [action.tick.asset_id]: action.tick
+        }
       }
     default:
       return state

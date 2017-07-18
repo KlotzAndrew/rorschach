@@ -16,8 +16,8 @@ export class Portfolio extends Component {
 
   mapTrades(trades) {
     if (!trades) { return null }
-    return trades.map(function(trade) {
-      return <div>{JSON.stringify(trade)}</div>
+    return trades.map(function(trade, i) {
+      return <div key={i}>{JSON.stringify(trade)}</div>
     })
   }
 }

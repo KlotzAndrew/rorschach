@@ -51,12 +51,19 @@ export const getStockHoldings = (portfolioId) => dispatch => {
     })
 }
 
-export const addTrade = (trade) => {
+export const addTrade = trade => {
   return {type: types.ADD_TRADE,
   trade}
 }
 
-const setAssets = (assets) => ({
+export const addTick = tick => {
+  return {
+    type: types.ADD_TICK,
+    tick
+  }
+}
+
+const setAssets = assets => ({
   type: types.SET_ASSETS,
   assets
 })
