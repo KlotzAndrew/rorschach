@@ -10,7 +10,7 @@ defmodule WebServer.AtClient do
 
   def build_tick(tick_values) do
     Tick.changeset(%Tick{
-      asset_id:        1,
+      asset_id:        nil,
       type:            Enum.at(tick_values, 0),
       ticker:          Enum.at(tick_values, 1),
       quote_condition: str_to_int(Enum.at(tick_values, 2)),

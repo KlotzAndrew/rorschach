@@ -3,24 +3,15 @@ defmodule TickHandlerTest do
 
   alias WebServer.TickHandler
 
-  defmodule Repo do
-    def insert!(changeset) do
-      if changeset.valid? do
-        send self(), :insert
-      end
-    end
-  end
-
   defmodule Trader do
-    def trade(changeset) do
-      if changeset.valid? do
-        send self(), :traded
-      end
+    def trade(_changeset) do
+      send self(), :traded
     end
   end
 
   defmodule Broadcaster do
     def broadcast_trades(_trades) do
+      IO.puts "broadcast_trades called!"
       send self(), :broadcasted
     end
 
@@ -29,24 +20,14 @@ defmodule TickHandlerTest do
     end
   end
 
-  defmodule TickStore do
-    def add(_changeset) do
-      send self(), :stored
-    end
-  end
-
   test "parses stream chunk" do
     TickHandler.parse(
       "Q,TSLA,0,K,Q,280.650000,280.770000,1,5,20170215125426269\n",
-      Repo,
       Trader,
-      Broadcaster,
-      TickStore
+      Broadcaster
     )
-    assert_receive :insert
     assert_receive :traded
     assert_receive :broadcasted
-    assert_receive :stored
     assert_receive :broadcasted_tick
   end
 end
