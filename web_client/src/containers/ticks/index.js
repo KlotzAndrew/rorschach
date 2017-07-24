@@ -12,7 +12,9 @@ export class Ticks extends Component {
   mapTicks(ticks) {
     if (!ticks) { return null }
     return Object.keys(ticks).map(function(tick, i) {
-      return <div key={i}>id: {tick}, price: {ticks[tick].ask_price}</div>
+      return <div key={i}>
+        ticker: {tick}, price: {parseInt(ticks[tick].ask_price, 10).toFixed(2)}
+      </div>
     })
   }
 }

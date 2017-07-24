@@ -11,7 +11,6 @@ const initialState = {
 }
 
 const portfolios = (state = initialState, action) => {
-  console.log('action', action)
   switch (action.type) {
     case types.SET_PORTFOLIOS:
       return {
@@ -50,7 +49,7 @@ const portfolios = (state = initialState, action) => {
         ...state,
         ticks: {
           ...state.ticks,
-          [action.tick.asset_id]: action.tick
+          [action.tick.ticker]: action.tick
         }
       }
     default:
