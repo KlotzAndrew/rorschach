@@ -2,27 +2,46 @@ var express = require('express');
 var app = express();
 var moment = require('moment');
 
+symbolSet = {};
+
 // /quoteStream?symbol=AAPL+GOOG
 app.get('/quoteStream', function(req, res) {
   res.writeHead(200, { "Content-Type": "text/event-stream" });
 
   req.query.symbol.split(" ").forEach(function(symbol) {
-    if (symbol) { randomWalk(res, symbol) }
+    if (needsPublish(symbolSet, symbol)) {
+      symbolSet[symbol] = true
+      randomWalk(res, symbol)
+    }
   })
 })
 
+function needsPublish(set, symbol) {
+  return set[symbol] ? false : true
+}
+
 function randomWalk(res, symbol) {
   var value = charsToInt(symbol);
-  res.write(quote_tick(symbol, value))
+  res.write(quoteTick(symbol, value))
 
   setInterval(function() {
-    value = value * (1 + Math.random()*0.01 - Math.random()*0.01)
-    res.write(quote_tick(symbol, value))
-  }, 2500)
+    value = newValue(value)
+    tick = quoteTick(symbol, value)
+    console.log('publishing tick: ', tick)
+    res.write(tick)
+  }, tickFrequency())
+}
+
+function tickFrequency() {
+  return Math.max(Math.random()*10000, 2500);
+}
+
+function newValue(oldValue) {
+  return oldValue * (1 + Math.random()*0.01 - Math.random()*0.01);
 }
 
 // 'Q,TSLA,0,K,Q,280.650000,280.770000,1,5,20170215125426269\n'
-function quote_tick(symbol, value) {
+function quoteTick(symbol, value) {
   timestamp = moment.utc().format('YYYYMMDDHHmmssSSS');
   bid = value*.99;
   ask = value;
