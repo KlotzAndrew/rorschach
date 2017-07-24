@@ -14,6 +14,7 @@ defmodule WebServer do
       supervisor(WebServer.Endpoint, []),
       supervisor(KVStore.Supervisor, []),
       supervisor(Court.Supervisor, []),
+      worker(WebServer.MarketReceiver, []),
       # Start your own worker by calling: WebServer.Worker.start_link(arg1, arg2, arg3)
       # worker(WebServer.Worker, [arg1, arg2, arg3]),
     ]
