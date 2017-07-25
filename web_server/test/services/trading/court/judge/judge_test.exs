@@ -26,10 +26,10 @@ defmodule Court.JudgeTest do
     end
   end
 
-  test "setup returns signals" do
+  test "setup returns signals for string id" do
     Process.register self(), :judge_test_setup
 
-    {:ok, judge} = Court.Judge.start_link(4, MockSignals, MockRegistry)
+    {:ok, judge} = Court.Judge.start_link("4", MockSignals, MockRegistry)
     expected_signals = %{"GOOG": %{"entry": 100, "exit": 200, "id": 4}}
 
     assert Court.Judge.signals(judge) == expected_signals

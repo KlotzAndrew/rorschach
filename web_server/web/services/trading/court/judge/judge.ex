@@ -4,9 +4,10 @@ defmodule Court.Judge do
   alias Court.{Registry, Arbiter, Signals}
 
   def start_link(id, signals \\ Signals, registry \\ Registry) do
-    name = String.to_atom("judge_" <> Integer.to_string(id))
+    judge_id = id_to_int(id)
+    name = judge_name(judge_id)
 
-    GenServer.start_link(__MODULE__, {id, signals, registry}, name: name)
+    GenServer.start_link(__MODULE__, {judge_id, signals, registry}, name: name)
   end
 
   def signals(pid) do
@@ -29,6 +30,16 @@ defmodule Court.Judge do
 
   def hear_trade_by_pid(pid, trade, tick, arbiter \\ Arbiter) do
     GenServer.call(pid, {:hear_trade, trade, tick, arbiter})
+  end
+
+  defp judge_name(id) do
+    String.to_atom("judge_" <> Integer.to_string(id))
+  end
+
+  defp id_to_int(id) when is_integer(id), do: id
+  defp id_to_int(id) do
+    {int, _} = Integer.parse(id)
+    int
   end
 
   #  Callbacks
