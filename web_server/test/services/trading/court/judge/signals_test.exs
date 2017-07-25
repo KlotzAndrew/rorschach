@@ -3,8 +3,8 @@ defmodule Court.SignalsTest do
 
   alias WebServer.{Asset, DayBar}
 
-  defmodule MockRepo do
-    def all(Asset) do
+  defmodule MockAssetRepo do
+    def all_non_cash do
       [
         %Asset{name: "asset_1", ticker: "A1", id: 1},
         %Asset{name: "asset_2", ticker: "A2", id: 2},
@@ -25,10 +25,10 @@ defmodule Court.SignalsTest do
 
   test "calculate includes created_at time" do
     deps = %{
-      repo:      MockRepo,
-      portfolio: Portfolio,
-      asset:     Asset,
-      day_bars:  MockDayBars
+      asset_repo: MockAssetRepo,
+      portfolio:  Portfolio,
+      asset:      Asset,
+      day_bars:   MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -37,10 +37,10 @@ defmodule Court.SignalsTest do
 
   test "calculate adds signals for each assets" do
     deps = %{
-      repo:      MockRepo,
-      portfolio: Portfolio,
-      asset:     Asset,
-      day_bars:  MockDayBars
+      asset_repo: MockAssetRepo,
+      portfolio:  Portfolio,
+      asset:      Asset,
+      day_bars:   MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -49,10 +49,10 @@ defmodule Court.SignalsTest do
 
   test "calculate adds enter and exit" do
     deps = %{
-      repo:      MockRepo,
-      portfolio: Portfolio,
-      asset:     Asset,
-      day_bars:  MockDayBars
+      asset_repo: MockAssetRepo,
+      portfolio:  Portfolio,
+      asset:      Asset,
+      day_bars:   MockDayBars
     }
     signals = Court.Signals.calculate(1, deps)
     expected = %{

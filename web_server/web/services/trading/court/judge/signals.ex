@@ -1,11 +1,9 @@
 defmodule Court.Signals do
-  alias WebServer.{Asset, Portfolio, Repo}
+  alias WebServer.{AssetRepository, Portfolio}
   alias AtClient.{DayBars}
 
   def calculate(_porfolio_id, deps \\ calculate_deps()) do
-    asset = deps[:asset]
-    repo = deps[:repo]
-    assets = repo.all(asset)
+    assets = deps[:asset_repo].all_non_cash
 
     details = %{}
     details = Map.put(details, "signals", signals(assets, deps[:day_bars]))
@@ -49,8 +47,7 @@ defmodule Court.Signals do
 
   defp calculate_deps do
     %{
-      repo: Repo,
-      asset: Asset,
+      asset_repo: AssetRepository,
       portfolio: Portfolio,
       day_bars: DayBars
     }
