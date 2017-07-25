@@ -14,18 +14,18 @@ defmodule Court.Judge do
     GenServer.call(pid, {:signals})
   end
 
-  def recommend(portfolio, tick_cs, registry \\ Registry) do
+  def recommend(portfolio, tick, registry \\ Registry) do
     {_id, pid} = registry.find(portfolio.id)
-    GenServer.call(pid, {:recommend, tick_cs, Arbiter})
+    GenServer.call(pid, {:recommend, tick, Arbiter})
   end
 
-  def recommend_by_pid(pid, tick_cs, arbiter \\ Arbiter) do
-    GenServer.call(pid, {:recommend, tick_cs, arbiter})
+  def recommend_by_pid(pid, tick, arbiter \\ Arbiter) do
+    GenServer.call(pid, {:recommend, tick, arbiter})
   end
 
-  def hear_trade(portfolio, trade, tick, registry \\ Registry) do
+  def hear_trade(portfolio, trade, tick, registry \\ Registry, arbiter \\ Arbiter) do
     {_id, pid} = registry.find(portfolio.id)
-    GenServer.call(pid, {:hear_trade, trade, tick})
+    GenServer.call(pid, {:hear_trade, trade, tick, arbiter})
   end
 
   def hear_trade_by_pid(pid, trade, tick, arbiter \\ Arbiter) do
@@ -56,13 +56,14 @@ defmodule Court.Judge do
     {:reply, state, state}
   end
 
-  def handle_call({:recommend, tick_cs, arbiter}, _from, state) do
-    decision = arbiter.decide(state["signals"], tick_cs)
+  def handle_call({:recommend, tick, arbiter}, _from, state) do
+    decision = arbiter.decide(state["signals"], tick)
     {:reply, decision, state}
   end
 
   def handle_call({:hear_trade, trade, tick, arbiter}, _from, state) do
-    new_state = arbiter.new_trade_info(state["signals"], trade, tick)
-    {:reply, trade, new_state}
+    new_signals = arbiter.new_trade_info(state["signals"], trade, tick)
+    new_state = Map.put(state, "signals", new_signals)
+    {:reply, new_state, new_state}
   end
 end

@@ -9,7 +9,7 @@ defmodule WebServer.AtClient do
   end
 
   def build_tick(tick_values) do
-    Tick.changeset(%Tick{
+    %Tick{
       asset_id:        nil,
       type:            Enum.at(tick_values, 0),
       ticker:          Enum.at(tick_values, 1),
@@ -21,7 +21,7 @@ defmodule WebServer.AtClient do
       bid_size:        Decimal.new(Enum.at(tick_values, 7)),
       ask_size:        Decimal.new(Enum.at(tick_values, 8)),
       time:            datetime(Enum.at(tick_values, 9))
-    })
+    }
   end
 
   defp market_url, do: System.get_env("MARKET_URL") || "market_mock"

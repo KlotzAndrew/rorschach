@@ -4,10 +4,10 @@ defmodule Court.ArbiterTest do
   alias WebServer.{Tick, Trade}
   alias Court.{Arbiter}
 
-  @tick_cs Tick.changeset(%Tick{}, %{
+  @tick %Tick{
     ticker:    "NFLX",
     ask_price: Decimal.new(50)
-  })
+  }
 
   test "decides bases on signals" do
     signals = %{
@@ -17,7 +17,7 @@ defmodule Court.ArbiterTest do
         "traded" => false
       }
     }
-    decision = Arbiter.decide(signals, @tick_cs)
+    decision = Arbiter.decide(signals, @tick)
 
     assert decision == {:buy, 1}
   end
@@ -30,7 +30,7 @@ defmodule Court.ArbiterTest do
         "traded" => false
       }
     }
-    decision = Arbiter.decide(signals, @tick_cs)
+    decision = Arbiter.decide(signals, @tick)
 
     assert decision == nil
   end
@@ -43,14 +43,14 @@ defmodule Court.ArbiterTest do
         "traded" => true
       }
     }
-    decision = Arbiter.decide(signals, @tick_cs)
+    decision = Arbiter.decide(signals, @tick)
 
     assert decision == nil
   end
 
   test "no trade for no signals" do
     signals = %{}
-    decision = Arbiter.decide(signals, @tick_cs)
+    decision = Arbiter.decide(signals, @tick)
 
     assert decision == nil
   end
@@ -64,7 +64,7 @@ defmodule Court.ArbiterTest do
       }
     }
     trade = %Trade{quantity: 1}
-    traded_signals = Arbiter.new_trade_info(signals, trade, @tick_cs)
+    traded_signals = Arbiter.new_trade_info(signals, trade, @tick)
 
     assert traded_signals == %{
       "NFLX" => %{
@@ -75,7 +75,7 @@ defmodule Court.ArbiterTest do
     }
 
     trade_sell = %Trade{quantity: -1}
-    no_traded_signals = Arbiter.new_trade_info(traded_signals, trade_sell, @tick_cs)
+    no_traded_signals = Arbiter.new_trade_info(traded_signals, trade_sell, @tick)
 
     assert no_traded_signals === signals
   end

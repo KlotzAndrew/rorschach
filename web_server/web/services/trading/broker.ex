@@ -1,23 +1,23 @@
 defmodule WebServer.Broker do
   alias WebServer.{Asset, Trade, Repo}
 
-  def buy_stock(changeset, portfolio_id, repo \\ Repo) do
+  def buy_stock(tick, portfolio_id, repo \\ Repo) do
     cash  = repo.get_by!(Asset, ticker: "CASH:USD")
-    asset = repo.get_by!(Asset, ticker: changeset.data.ticker)
+    asset = repo.get_by!(Asset, ticker: tick.ticker)
 
-    execute_trade(repo, changeset, portfolio_id, asset, cash, 1)
+    execute_trade(repo, tick, portfolio_id, asset, cash, 1)
   end
 
-  def sell_stock(changeset, portfolio_id, repo \\ Repo) do
+  def sell_stock(tick, portfolio_id, repo \\ Repo) do
     cash  = repo.get_by!(Asset, ticker: "CASH:USD")
-    asset = repo.get_by!(Asset, ticker: changeset.data.ticker)
+    asset = repo.get_by!(Asset, ticker: tick.ticker)
 
-    execute_trade(repo, changeset, portfolio_id, asset, cash, -1)
+    execute_trade(repo, tick, portfolio_id, asset, cash, -1)
   end
 
-  defp build_trade(changeset, portfolio_id, asset, cash, quantity) do
+  defp build_trade(tick, portfolio_id, asset, cash, quantity) do
     cash_offset = Decimal.new(-1)
-    price       = changeset.data.ask_price
+    price       = tick.ask_price
     cash_total  = Decimal.mult(price,  Decimal.new(quantity)) |> Decimal.mult(cash_offset)
 
     Trade.changeset(%Trade{
@@ -31,8 +31,8 @@ defmodule WebServer.Broker do
     })
   end
 
-  defp execute_trade(repo, changeset, portfolio_id, asset, cash, quantity) do
-    changeset = build_trade(changeset, portfolio_id, asset, cash, quantity)
+  defp execute_trade(repo, tick, portfolio_id, asset, cash, quantity) do
+    changeset = build_trade(tick, portfolio_id, asset, cash, quantity)
     repo.insert! changeset
   end
 end

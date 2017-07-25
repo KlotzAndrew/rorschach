@@ -5,7 +5,10 @@ defmodule Court.JudgeTest do
 
   defmodule MockSignals do
     def calculate(id) do
-      %{"GOOG": %{"entry": 100, "exit": 200, "id": id}}
+      %{
+        "created_at" => "888",
+        "signals" => %{"GOOG" => %{"entry" => 100, "exit" => 200, "id" => id}}
+      }
     end
   end
 
@@ -20,9 +23,8 @@ defmodule Court.JudgeTest do
       "decision_123"
     end
 
-    def new_trade_info(_state, trade, _tick) do
-      send :judge_test_setup, :new_trade_info
-      trade
+    def new_trade_info(_state, _trade, _tick) do
+      "new_signals"
     end
   end
 
@@ -30,7 +32,10 @@ defmodule Court.JudgeTest do
     Process.register self(), :judge_test_setup
 
     {:ok, judge} = Court.Judge.start_link("4", MockSignals, MockRegistry)
-    expected_signals = %{"GOOG": %{"entry": 100, "exit": 200, "id": 4}}
+    expected_signals = %{
+      "created_at" => "888",
+      "signals" => %{"GOOG" => %{"entry" => 100, "exit" => 200, "id" => 4}}
+    }
 
     assert Court.Judge.signals(judge) == expected_signals
     assert_receive :added_register
@@ -41,26 +46,24 @@ defmodule Court.JudgeTest do
 
     {:ok, judge} = Court.Judge.start_link(5, MockSignals, MockRegistry)
 
-    recomendation = Court.Judge.recommend_by_pid(judge, "tick_cs", MockArbiter)
+    recomendation = Court.Judge.recommend_by_pid(judge, "tick", MockArbiter)
     assert recomendation == "decision_123"
 
     assert_receive :added_register
   end
 
-  test "updates state on new trade" do
+  test "hear_trade_by_pid updates state on new trade" do
     Process.register self(), :judge_test_setup
-    tick = Tick.changeset(%Tick{}, %{
+    tick = %Tick{
       asset_id:  3,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
-    })
+    }
     trade = %Trade{quantity: 1}
 
     {:ok, judge} = Court.Judge.start_link(5, MockSignals, MockRegistry)
 
     result = Court.Judge.hear_trade_by_pid(judge, trade, tick, MockArbiter)
-    assert result == trade
-
-    assert_receive :new_trade_info
+    assert result == %{"created_at" => "888", "signals" => "new_signals" }
   end
 end

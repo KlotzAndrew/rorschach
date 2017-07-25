@@ -20,53 +20,53 @@ defmodule TraderTest do
   defmodule JudgeMock do
     def recommend(_portfolio, tick_cs) do
       cond do
-        tick_cs.params["asset_id"] == 1 -> {:buy, 1}
-        tick_cs.params["asset_id"] == 2 -> {:sell, -1}
-        tick_cs.params["asset_id"] == 3 -> nil
+        tick_cs.asset_id == 1 -> {:buy, 1}
+        tick_cs.asset_id == 2 -> {:sell, -1}
+        tick_cs.asset_id == 3 -> nil
       end
     end
 
     def hear_trade(_portfolio, _trade, tick_cs) do
       cond do
-        tick_cs.params["asset_id"] == 1 -> nil
-        tick_cs.params["asset_id"] == 2 -> send :trader_test_setup, :new_trade_info
-        tick_cs.params["asset_id"] == 3 -> nil
+        tick_cs.asset_id == 1 -> nil
+        tick_cs.asset_id == 2 -> send :trader_test_setup, :new_trade_info
+        tick_cs.asset_id == 3 -> nil
       end
 
     end
   end
 
   test "buys or sells a single stock" do
-    changeset = Tick.changeset(%Tick{}, %{
+    tick = %Tick{
       asset_id:  1,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
-    })
-    result = Trader.trade(changeset, Broker, Repo, JudgeMock)
+    }
+    result = Trader.trade(tick, Broker, Repo, JudgeMock)
     buy_or_sell = Enum.at(result, 0)
 
     assert buy_or_sell in ["buy", "sell", nil] == true
   end
 
   test "no trade" do
-    changeset = Tick.changeset(%Tick{}, %{
+    tick = %Tick{
       asset_id:  3,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
-    })
-    result = Trader.trade(changeset, Broker, Repo, JudgeMock)
+    }
+    result = Trader.trade(tick, Broker, Repo, JudgeMock)
 
     assert [] == result
   end
 
   test "notifies judge of trade" do
     Process.register self(), :trader_test_setup
-    changeset = Tick.changeset(%Tick{}, %{
+    tick = %Tick{
       asset_id:  2,
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
-    })
-    Trader.trade(changeset, Broker, Repo, JudgeMock)
+    }
+    Trader.trade(tick, Broker, Repo, JudgeMock)
 
     assert_receive :new_trade_info
   end

@@ -21,24 +21,24 @@ defmodule BrokerTest do
 
   test "buys stock" do
     portfolio_id = 1
-    changeset = Tick.changeset(%Tick{
+    tick = %Tick{
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
-    })
+    }
 
-    result = Broker.buy_stock(changeset, portfolio_id, Repo)
+    result = Broker.buy_stock(tick, portfolio_id, Repo)
 
     assert portfolio_id == result.portfolio_id
   end
 
   test "sells stock" do
     portfolio_id = 1
-    changeset = Tick.changeset(%Tick{
+    tick = %Tick{
       ticker:    "GOOG",
       ask_price: Decimal.new(100),
-    })
+    }
 
-    result = Broker.sell_stock(changeset, portfolio_id, Repo)
+    result = Broker.sell_stock(tick, portfolio_id, Repo)
 
     assert portfolio_id == result.portfolio_id
   end
