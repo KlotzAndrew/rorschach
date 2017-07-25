@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getCashHoldings, getStockHoldings } from '../../actions/index';
+import Currency from '../currency';
 
 export class Portfolio extends Component {
   componentWillMount() {
@@ -43,7 +44,7 @@ export class Portfolio extends Component {
       return <tr key={i}>
         <td>{asset.name}</td>
         <td>{holding.quantity.toFixed(0)}</td>
-        <td>{(holding.quantity * (holding.price || 1)).toFixed(2)}</td>
+        <td><Currency value={holding.quantity * (holding.price || 1)} /></td>
       </tr>
     })
   }

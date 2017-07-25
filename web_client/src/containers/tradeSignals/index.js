@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTradeSignals } from '../../actions/index';
+import Currency from '../currency';
 
 export class Portfolio extends Component {
   componentWillMount() {
@@ -16,11 +17,13 @@ export class Portfolio extends Component {
 
   mapSignals(tradeSignals) {
     if (!tradeSignals) { return null }
-    console.log('tradeSignals', tradeSignals)
     return Object.keys(tradeSignals).map(function(key, i) {
       const values = tradeSignals[key]
       return <div key={i}>
-        Ticker: {key} | enter: {values.enter} | exit: {values.exit} | traded: {JSON.stringify(values.traded)}
+        Ticker: {key} |
+        enter: <Currency value={values.enter} /> |
+        exit: <Currency value={values.exit} /> |
+        traded: {JSON.stringify(values.traded)}
       </div>
     })
   }
