@@ -6,6 +6,7 @@ import {
 import Portfolio from './containers/portfolio'
 import Trades from './containers/trades'
 import Ticks from './containers/ticks'
+import TradeSignals from './containers/tradeSignals'
 import './App.css';
 
 export class App extends Component {
@@ -32,14 +33,19 @@ export class App extends Component {
   }
 
   mapPortfolios(portfolios) {
-    if (!portfolios) return null
+    if (!portfolios) return null;
     const that = this;
     return Object.keys(portfolios).map(function(key) {
-      const portfolio = portfolios[key]
-      return <Portfolio
-        key={key}
-        portfolio={portfolio}
-        assets={that.props.assets} />
+      const portfolio = portfolios[key];
+      return <div>
+        <Portfolio
+          key={key}
+          portfolio={portfolio}
+          assets={that.props.assets} />
+        <TradeSignals
+          key={key + 'ts'}
+          portfolio={portfolio} />
+      </div>
     })
   }
 }

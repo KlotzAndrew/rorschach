@@ -19,5 +19,9 @@ export default{
 
   getStockHoldings(portfolio_id) {
     return axiosInstance.get(`trades/stock_holdings/${portfolio_id}`);
+  },
+
+  getTradeSignals(portfolio_id) {
+    return axiosInstance.get(`trade_signals/${portfolio_id}`);
   }
 }

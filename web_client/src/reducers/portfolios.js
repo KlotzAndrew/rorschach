@@ -8,6 +8,7 @@ const initialState = {
   assets: {},
   trade: [],
   ticks: {},
+  tradeSignals: {}
 }
 
 const portfolios = (state = initialState, action) => {
@@ -51,6 +52,14 @@ const portfolios = (state = initialState, action) => {
         ticks: {
           ...state.ticks,
           [action.tick.ticker]: action.tick
+        }
+      }
+    case types.SET_TRADE_SIGNALS:
+      return {
+        ...state,
+        tradeSignals: {
+          ...state.tradeSignals,
+          [action.portfolioId]: action.signals.attributes.signals
         }
       }
     default:

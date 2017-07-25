@@ -51,6 +51,22 @@ export const getStockHoldings = (portfolioId) => dispatch => {
     })
 }
 
+
+const setTradeSignals = (portfolioId, signals) => {
+  return {
+    type: types.SET_TRADE_SIGNALS,
+    portfolioId,
+    signals
+  }
+}
+
+export const getTradeSignals = portfolioId => dispatch => {
+  portfolio.getTradeSignals(portfolioId)
+    .then(repsonse => {
+      dispatch(setTradeSignals(portfolioId, repsonse.data.data))
+    })
+}
+
 export const addTrade = trade => {
   return {type: types.ADD_TRADE,
   trade}
