@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTrades } from '../../actions/index';
+import moment from 'moment';
 
 export class Portfolio extends Component {
   componentWillMount() {
@@ -17,7 +18,10 @@ export class Portfolio extends Component {
   mapTrades(trades) {
     if (!trades) { return null }
     return trades.map(function(trade, i) {
-      return <div key={i}>{JSON.stringify(trade)}</div>
+      return <div key={i}>
+        {moment(trade.inserted_at).format('MMM DD h:mm A')} |
+        type: {trade.type} | q: {trade.quantity} | asset: {trade.asset_id}
+      </div>
     })
   }
 }
