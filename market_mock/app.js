@@ -2,17 +2,17 @@ var express = require('express');
 var app = express();
 var moment = require('moment');
 
-symbolSet = {};
+let prevReq = null;
 
 // /quoteStream?symbol=AAPL+GOOG
 app.get('/quoteStream', function(req, res) {
   res.writeHead(200, { "Content-Type": "text/event-stream" });
+  prevReq = req
+
+  console.log('received request', req.query)
 
   req.query.symbol.split(" ").forEach(function(symbol) {
-    if (needsPublish(symbolSet, symbol)) {
-      symbolSet[symbol] = true
-      randomWalk(res, symbol)
-    }
+    randomWalk(req, res, symbol, charsToInt(symbol))
   })
 })
 
@@ -20,15 +20,15 @@ function needsPublish(set, symbol) {
   return set[symbol] ? false : true
 }
 
-function randomWalk(res, symbol) {
-  var value = charsToInt(symbol);
-  res.write(quoteTick(symbol, value))
+function randomWalk(req, res, symbol, prevValue) {
+  var value = newValue(prevValue);
 
-  setInterval(function() {
-    value = newValue(value)
+  setTimeout(function() {
     tick = quoteTick(symbol, value)
     console.log('publishing tick: ', tick)
     res.write(tick)
+
+    if (req == prevReq) { randomWalk(req, res, symbol, value) }
   }, tickFrequency())
 }
 
