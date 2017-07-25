@@ -17,7 +17,10 @@ config :web_server, WebServer.Endpoint,
   pubsub: [name: WebServer.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :plug, :mimes, %{
+config :phoenix, :format_encoders,
+  "json-api": Poison
+
+config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }
 

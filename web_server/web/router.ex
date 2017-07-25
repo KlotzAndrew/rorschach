@@ -31,5 +31,6 @@ defmodule WebServer.Router do
     post "/assets/search", AssetController, :search
     get "/trades/cash_holdings/:portfolio_id", TradeController, :cash_holdings
     get "/trades/stock_holdings/:portfolio_id", TradeController, :stock_holdings
+    get "/trade_signals/:portfolio_id", TradeSignalController, :index
   end
 end
