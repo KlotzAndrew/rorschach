@@ -61,6 +61,21 @@ defmodule Court.ArbiterTest do
     assert decision == {:sell, -1}
   end
 
+  test "decides for close decimal compares" do
+    tick = %Tick{ticker: "NFLX", ask_price: Decimal.new(-1)}
+    signals = %{
+      "NFLX" => %{
+        "enter"  => Decimal.new(0),
+        "exit"   => Decimal.new(10),
+        "traded" => false
+      }
+    }
+
+    decision = Arbiter.decide(signals, tick)
+
+    assert decision == {:buy, 1}
+  end
+
   test "no trade for no signals" do
     signals = %{}
     decision = Arbiter.decide(signals, @tick)

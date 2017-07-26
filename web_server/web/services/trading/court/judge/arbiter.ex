@@ -18,15 +18,30 @@ defmodule Court.Arbiter do
 
   defp calc(%{"enter" => _ent, "exit" => ex, "traded" => true}, tick) do
     cond do
-      tick.ask_price > ex -> {:sell, -1}
+      lt?(tick.ask_price, ex) -> {:sell, -1}
       true -> nil
     end
   end
 
   defp calc(%{"enter" => ent, "exit" => ex, "traded" => _tr}, tick) do
     cond do
-      tick.ask_price > ex -> {:sell, -1}
-      tick.ask_price < ent -> {:buy, 1}
+      gt?(tick.ask_price, ex) -> {:sell, -1}
+      lt?(tick.ask_price, ent) -> {:buy, 1}
+      true -> nil
+    end
+  end
+
+  defp lt?(left, right) do
+    case Decimal.cmp(left, right) do
+      :lt -> true
+      _ -> false
+    end
+  end
+
+  defp gt?(left, right) do
+    case Decimal.cmp(left, right) do
+      :gt -> true
+      _ -> false
     end
   end
 end
