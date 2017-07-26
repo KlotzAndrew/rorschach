@@ -20,7 +20,7 @@ export class Portfolio extends Component {
     return trades.map(function(trade, i) {
       return <div key={i}>
         {moment(trade.inserted_at).format('MMM DD h:mm A')} |
-        type: {trade.type} | q: {trade.quantity} | asset: {trade.asset_id}
+        type: {trade.type} | q: {trade.quantity} | asset: {trade.asset_id} | portfolio: {trade.portfolio_id}
       </div>
     })
   }

@@ -39,7 +39,7 @@ const portfolios = (state = initialState, action) => {
         ...state,
         stock_holdings: updateAssetQuantity(state, action.trade),
         cash_holdings: updateCashQuantity(state, action.trade),
-        trades: R.append(action.trade, state.trades)
+        trades: R.drop(1, R.append(action.trade, state.trades))
       }
     case types.SET_TRADES:
       return {

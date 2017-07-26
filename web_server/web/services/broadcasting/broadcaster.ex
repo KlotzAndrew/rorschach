@@ -32,7 +32,8 @@ defp payload(trade) do
       "asset_id"     => trade.asset_id,
       "cash_id"      => trade.cash_id,
       "type"         => trade.type,
-      "cash_total"   => trade.cash_total
+      "cash_total"   => trade.cash_total,
+      "inserted_at"  => trade.inserted_at
     }
   end
 end
