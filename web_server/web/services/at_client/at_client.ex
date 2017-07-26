@@ -3,7 +3,7 @@ defmodule WebServer.AtClient do
   alias WebServer.{Tick}
 
   def streaming_url(tickers) do
-    base_url = "http://#{market_url()}:5020/quoteStream?symbol="
+    base_url = "#{market_stream_url()}:5020/quoteStream?symbol="
 
     base_url <> Enum.join(tickers, "+")
   end
@@ -24,7 +24,7 @@ defmodule WebServer.AtClient do
     }
   end
 
-  defp market_url, do: System.get_env("MARKET_URL") || "market_mock"
+  defp market_stream_url, do: System.get_env("MARKET_STREAM_URL")
 
   # YYYY_MM_DD_HH_MM_SS_mmm
   # 2017_02_15_12_54_26_269

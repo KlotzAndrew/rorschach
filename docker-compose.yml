@@ -12,6 +12,7 @@ services:
     command: mix phoenix.server
     environment:
       MARKET_URL: ${MARKET_URL}
+      MARKET_STREAM_URL: ${MARKET_STREAM_URL}
 
   db:
     image: postgres

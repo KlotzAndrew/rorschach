@@ -1,7 +1,7 @@
 defmodule WebServer.MarketConsumer do
   use GenServer
 
-  alias WebServer.{TickHandler}
+  alias WebServer.{AssetRepository, AtClient, TickHandler}
 
   def start_link(_opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -16,8 +16,8 @@ defmodule WebServer.MarketConsumer do
   # defp market_url, do: System.get_env("MARKET_URL")
 
   defp url do
-    # "#{market_url()}:5000/quoteStream?symbol=NFLX+AMZN"
-    "http://market_mock:5020/quoteStream?symbol=NFLX+AMZN"
+    tickers = AssetRepository.all_stock_tickers
+    AtClient.streaming_url(tickers)
   end
 
   def handle_info(:start_consume, state) do

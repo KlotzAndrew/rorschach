@@ -6,4 +6,9 @@ defmodule WebServer.AssetRepository do
     query = from a in Asset, where: a.ticker != "CASH:USD"
     Repo.all(query)
   end
+
+  def all_stock_tickers do
+    query = from a in Asset, where: a.ticker != "CASH:USD", select: a.ticker
+    Repo.all(query)
+  end
 end
