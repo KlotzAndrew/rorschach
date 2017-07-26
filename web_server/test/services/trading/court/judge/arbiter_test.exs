@@ -9,7 +9,7 @@ defmodule Court.ArbiterTest do
     ask_price: Decimal.new(50)
   }
 
-  test "decides bases on signals" do
+  test "decides buys" do
     signals = %{
       "NFLX" => %{
         "enter"  => Decimal.new(90),
@@ -17,12 +17,12 @@ defmodule Court.ArbiterTest do
         "traded" => false
       }
     }
-    decision = Arbiter.decide(signals, @tick)
+    result = Arbiter.decide(signals, @tick)
 
-    assert decision == {:buy, 1}
+    assert result[:decision] == {:buy, 1}
   end
 
-  test "does nothing when no signals" do
+  test "decides does nothing when no signals" do
     signals = %{
       "NFLX" => %{
         "enter"  => nil,
@@ -30,12 +30,19 @@ defmodule Court.ArbiterTest do
         "traded" => false
       }
     }
-    decision = Arbiter.decide(signals, @tick)
+    result = Arbiter.decide(signals, @tick)
 
-    assert decision == nil
+    assert result[:decision] == nil
   end
 
-  test "does not buy when traded" do
+  test "no trade for no signals" do
+    signals = %{}
+    result = Arbiter.decide(signals, @tick)
+
+    assert result[:decision] == nil
+  end
+
+  test "decides no buy when traded" do
     signals = %{
       "NFLX" => %{
         "enter"  => Decimal.new(90),
@@ -43,12 +50,12 @@ defmodule Court.ArbiterTest do
         "traded" => true
       }
     }
-    decision = Arbiter.decide(signals, @tick)
+    result = Arbiter.decide(signals, @tick)
 
-    assert decision == nil
+    assert result[:decision] == nil
   end
 
-  test "sells when traded" do
+  test "decides sells when traded" do
     signals = %{
       "NFLX" => %{
         "enter"  => Decimal.new(9),
@@ -56,12 +63,12 @@ defmodule Court.ArbiterTest do
         "traded" => true
       }
     }
-    decision = Arbiter.decide(signals, @tick)
+    result = Arbiter.decide(signals, @tick)
 
-    assert decision == {:sell, -1}
+    assert result[:decision] == {:sell, -1}
   end
 
-  test "decides for close decimal compares" do
+  test "decide for close decimal compares" do
     tick = %Tick{ticker: "NFLX", ask_price: Decimal.new(-1)}
     signals = %{
       "NFLX" => %{
@@ -71,16 +78,36 @@ defmodule Court.ArbiterTest do
       }
     }
 
-    decision = Arbiter.decide(signals, tick)
+    result = Arbiter.decide(signals, tick)
 
-    assert decision == {:buy, 1}
+    assert result[:decision] == {:buy, 1}
   end
 
-  test "no trade for no signals" do
-    signals = %{}
-    decision = Arbiter.decide(signals, @tick)
+  test "decide updates signals" do
+    signals = %{
+      "NFLX" => %{
+        "enter"  => Decimal.new(90),
+        "exit"   => Decimal.new(100),
+        "traded" => false
+      }
+    }
+    after_buy = %{
+      "NFLX" => %{
+        "enter"  => Decimal.new(90),
+        "exit"   => Decimal.new(100),
+        "traded" => true
+      }
+    }
+    result = Arbiter.decide(signals, @tick)
 
-    assert decision == nil
+    assert result[:decision] == {:buy, 1}
+    assert result[:signals] == after_buy
+
+    sell_tick = %Tick{ticker: "NFLX", ask_price: Decimal.new(500) }
+
+    result = Arbiter.decide(result[:signals], sell_tick)
+    assert result[:decision] == {:sell, -1}
+    assert result[:signals] == signals
   end
 
   test "new_trade_info updates traded" do

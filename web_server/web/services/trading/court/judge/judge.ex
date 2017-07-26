@@ -57,8 +57,9 @@ defmodule Court.Judge do
   end
 
   def handle_call({:recommend, tick, arbiter}, _from, state) do
-    decision = arbiter.decide(state["signals"], tick)
-    {:reply, decision, state}
+    result = arbiter.decide(state["signals"], tick)
+    new_state = Map.put(state, "signals", result[:signals])
+    {:reply, result[:decision], new_state}
   end
 
   def handle_call({:hear_trade, trade, tick, arbiter}, _from, state) do

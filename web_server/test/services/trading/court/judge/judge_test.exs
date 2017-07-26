@@ -20,7 +20,10 @@ defmodule Court.JudgeTest do
 
   defmodule MockArbiter do
     def decide(_signals, _tick_cs) do
-      "decision_123"
+      %{
+        decision: "decision_123",
+        signals: "new signals 888!"
+      }
     end
 
     def new_trade_info(_state, _trade, _tick) do
@@ -48,6 +51,8 @@ defmodule Court.JudgeTest do
 
     recomendation = Court.Judge.recommend_by_pid(judge, "tick", MockArbiter)
     assert recomendation == "decision_123"
+
+    assert Court.Judge.signals(judge) == %{"created_at" => "888", "signals" => "new signals 888!"}
 
     assert_receive :added_register
   end
