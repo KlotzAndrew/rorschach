@@ -27,7 +27,7 @@ defmodule WebServer.Broker do
       quantity:     quantity,
       price:        price,
       cash_total:   cash_total,
-      type:         "Buy"
+      type:         trade_type(quantity)
     })
   end
 
@@ -35,4 +35,7 @@ defmodule WebServer.Broker do
     changeset = build_trade(tick, portfolio_id, asset, cash, quantity)
     repo.insert! changeset
   end
+
+  defp trade_type(quantity) when quantity > 0, do: "Buy"
+  defp trade_type(quantity) when quantity < 0, do: "Sell"
 end
