@@ -12,7 +12,7 @@ app.get('/quoteStream', function(req, res) {
   console.log('received request', req.query)
 
   req.query.symbol.split(" ").forEach(function(symbol) {
-    randomWalk(req, res, symbol, charsToInt(symbol))
+    randomWalk(req, res, symbol, 50)
   })
 })
 
@@ -33,11 +33,13 @@ function randomWalk(req, res, symbol, prevValue) {
 }
 
 function tickFrequency() {
-  return Math.max(Math.random()*10000, 2500);
+  return Math.random()*10000;
 }
 
 function newValue(oldValue) {
-  return oldValue * (1 + Math.random()*0.01 - Math.random()*0.01);
+  if (oldValue > 2000) { return 1; }
+  return oldValue * 20
+  // return oldValue * (1 + Math.random()*0.01 - Math.random()*0.01);
 }
 
 // 'Q,TSLA,0,K,Q,280.650000,280.770000,1,5,20170215125426269\n'
