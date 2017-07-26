@@ -15,12 +15,18 @@ defmodule Court.Arbiter do
   defp calc(%{"enter" => nil, "exit" => _ex, "traded" => _tr}, _tick), do: nil
   defp calc(%{"enter" => _ent, "exit" => nil, "traded" => _tr}, _tick), do: nil
   defp calc(%{"enter" => nil, "exit" => nil, "traded" => _tr}, _tick), do: nil
-  defp calc(%{"enter" => _ent, "exit" => _ex, "traded" => true}, _tick), do: nil
+
+  defp calc(%{"enter" => _ent, "exit" => ex, "traded" => true}, tick) do
+    cond do
+      tick.ask_price > ex -> {:sell, -1}
+      true -> nil
+    end
+  end
 
   defp calc(%{"enter" => ent, "exit" => ex, "traded" => _tr}, tick) do
     cond do
-      tick.ask_price < ent -> {:buy, 1}
       tick.ask_price > ex -> {:sell, -1}
+      tick.ask_price < ent -> {:buy, 1}
     end
   end
 end

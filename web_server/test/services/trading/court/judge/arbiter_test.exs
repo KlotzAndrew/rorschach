@@ -35,7 +35,7 @@ defmodule Court.ArbiterTest do
     assert decision == nil
   end
 
-  test "only trade once per cycle" do
+  test "does not buy when traded" do
     signals = %{
       "NFLX" => %{
         "enter"  => Decimal.new(90),
@@ -46,6 +46,19 @@ defmodule Court.ArbiterTest do
     decision = Arbiter.decide(signals, @tick)
 
     assert decision == nil
+  end
+
+  test "sells when traded" do
+    signals = %{
+      "NFLX" => %{
+        "enter"  => Decimal.new(9),
+        "exit"   => Decimal.new(10),
+        "traded" => true
+      }
+    }
+    decision = Arbiter.decide(signals, @tick)
+
+    assert decision == {:sell, -1}
   end
 
   test "no trade for no signals" do
