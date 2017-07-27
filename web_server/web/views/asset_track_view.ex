@@ -12,6 +12,7 @@ defmodule WebServer.AssetTrackView do
   def render("asset_track.json", %{asset_track: asset_track}) do
     %{id: asset_track.id,
       portfolio_id: asset_track.portfolio_id,
-      asset_id: asset_track.asset_id}
+      asset_id: asset_track.asset_id,
+      active: asset_track.active}
   end
 end

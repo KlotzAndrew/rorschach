@@ -26,6 +26,8 @@ defmodule WebServer.Router do
     resources "/trades", TradeController, except: [:new, :edit]
     resources "/portfolios", PortfolioController, except: [:new, :edit]
     resources "/asset_tracks", AssetTrackController, except: [:new, :edit]
+    post "/asset_tracks/toggle", AssetTrackController, :toggle
+
     resources "/ticks", TickController, except: [:new, :edit]
     resources "/assets", AssetController, except: [:new, :edit]
     post "/assets/search", AssetController, :search

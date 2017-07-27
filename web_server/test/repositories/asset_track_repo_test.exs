@@ -7,15 +7,15 @@ defmodule WebServer.AssetTrackRepoTest do
     portfolio = %Portfolio{id: 1}
     asset = %Asset{id: 2}
 
-    AssetTrackRepo.add_to_portfolio(portfolio, asset)
+    AssetTrackRepo.toggle(true, portfolio.id, asset.id)
     at = Repo.one(AssetTrack)
     assert at.active == true
 
-    AssetTrackRepo.remove_from_portfolio(portfolio, asset)
+    AssetTrackRepo.toggle(false, portfolio.id, asset.id)
     at = Repo.one(AssetTrack)
     assert at.active == false
 
-    AssetTrackRepo.add_to_portfolio(portfolio, asset)
+    AssetTrackRepo.toggle(true, portfolio.id, asset.id)
     at = Repo.one(AssetTrack)
     assert at.active == true
   end
