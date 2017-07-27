@@ -16,7 +16,7 @@ defmodule WebServer.AssetTracker do
     portfolios = PortfolioRepository.all
     Enum.each(portfolios, fn(p) ->
       signals = Judge.recalculate_signals(p)
-      Broadcaster.broadcast_trade_signals(signals)
+      Broadcaster.broadcast_trade_signals(p, signals)
     end)
   end
 end

@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 import { Socket } from 'phoenix-socket';
-import { addTrade, addTick } from './actions/index'
+import { addTrade, addTick, updateSignals } from './actions/index'
 import App from './App';
 import './index.css';
 import reducer from './reducers/index'
@@ -33,6 +33,12 @@ channel.on('new:tick', payload => {
     store.dispatch(addTick(payload))
   }
 );
+
+channel.on('new:signals', payload => {
+    store.dispatch(updateSignals(payload))
+  }
+);
+
 
 render(
   <Provider store={store}>

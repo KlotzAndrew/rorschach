@@ -79,6 +79,13 @@ export const addTick = tick => {
   }
 }
 
+export const updateSignals = signals => {
+  return {
+    type: types.UPDATE_SIGNALS,
+    signals
+  }
+}
+
 const setAssets = assets => ({
   type: types.SET_ASSETS,
   assets

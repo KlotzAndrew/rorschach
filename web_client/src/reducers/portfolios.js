@@ -62,6 +62,14 @@ const portfolios = (state = initialState, action) => {
           [action.portfolioId]: action.signals.attributes.signals
         }
       }
+    case types.UPDATE_SIGNALS:
+      return {
+        ...state,
+        tradeSignals: {
+          ...state.tradeSignals,
+          [action.signals.portfolio_id]: action.signals.signals
+        }
+      }
     default:
       return state
   }
