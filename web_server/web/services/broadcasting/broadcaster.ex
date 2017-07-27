@@ -14,6 +14,17 @@ defmodule WebServer.Broadcaster do
     Enum.each(trades, fn t -> broadcast_trade(t, endpoint) end)
   end
 
+  def broadcast_trade_signals(signals, endpoint \\ Endpoint) do
+    endpoint.broadcast! "room:lobby", "new:signals", trade_signals_payload(signals)
+  end
+
+  defp trade_signals_payload(signals) do
+    %{
+      signals:    signals["signals"],
+      created_at: signals["created_at"]
+    }
+  end
+
   defp tick_payload(tick) do
     %{
       "time"      => tick.time,
@@ -23,7 +34,7 @@ defmodule WebServer.Broadcaster do
     }
   end
 
-defp payload(trade) do
+  defp payload(trade) do
     %{
       "id"           => trade.id,
       "price"        => trade.price,

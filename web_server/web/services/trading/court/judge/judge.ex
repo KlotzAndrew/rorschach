@@ -32,6 +32,12 @@ defmodule Court.Judge do
     GenServer.call(pid, {:hear_trade, trade, tick, arbiter})
   end
 
+  def recalculate_signals(portfolio, registry \\ Registry, signals \\ Signals) do
+    id         = portfolio.id
+    {_id, pid} = registry.find(id)
+    GenServer.call(pid, {:recalculate_signals, id, signals})
+  end
+
   defp judge_name(id) do
     String.to_atom("judge_" <> Integer.to_string(id))
   end
@@ -67,4 +73,11 @@ defmodule Court.Judge do
     new_state = Map.put(state, "signals", new_signals)
     {:reply, new_state, new_state}
   end
+
+  def handle_call({:recalculate_signals, id, signals}, _from, _state) do
+    signals = signals.calculate(id)
+
+    {:reply, signals, signals}
+  end
+
 end

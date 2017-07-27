@@ -13,23 +13,35 @@ defmodule WebServer.MarketConsumer do
     {:ok, nil}
   end
 
-  # defp market_url, do: System.get_env("MARKET_URL")
+  def update_stream do
+    GenServer.call(__MODULE__, {:update_consume})
+  end
 
   defp url do
     tickers = AssetRepository.all_stock_tickers
     AtClient.streaming_url(tickers)
   end
 
-  def handle_info(:start_consume, state) do
-    if state do
-      :hackney.stop_async state # TODO: can this error?
-    end
-
+  defp rollover_stream(old_id) do
     {:ok, %HTTPoison.AsyncResponse{id: id}} =
       HTTPoison.get(url(), %{}, [recv_timeout: :infinity, stream_to: self()])
 
-    {:noreply, id}
+    if old_id, do: :hackney.stop_async(old_id)
+
+    id
   end
+
+  # Callbacks
+
+  def handle_call({:update_consume}, _from, state) do
+    id = rollover_stream(state)
+    {:reply, :ok, id}
+  end
+
+  def handle_info(:start_consume, state) do
+      id = rollover_stream(state)
+      {:noreply, id}
+    end
 
   def handle_info(%HTTPoison.AsyncResponse{id: id}, state) do
     IO.inspect id, label: "HTTPoison.AsyncResponse: "
