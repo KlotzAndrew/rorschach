@@ -1,7 +1,7 @@
 defmodule WebServer.MarketConsumer do
   use GenServer
 
-  alias WebServer.{AssetRepository, AtClient, TickHandler}
+  alias WebServer.{AssetRepo, AtClient, TickHandler}
 
   def start_link(_opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -18,7 +18,7 @@ defmodule WebServer.MarketConsumer do
   end
 
   defp url do
-    tickers = AssetRepository.all_stock_tickers
+    tickers = AssetRepo.all_active_tickers
     AtClient.streaming_url(tickers)
   end
 

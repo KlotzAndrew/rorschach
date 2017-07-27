@@ -19,7 +19,9 @@ defmodule WebServer.AssetTrackControllerTest do
     conn = get conn, asset_track_path(conn, :show, asset_track)
     assert json_response(conn, 200)["data"] == %{"id" => asset_track.id,
       "portfolio_id" => asset_track.portfolio_id,
-      "asset_id" => asset_track.asset_id}
+      "asset_id" => asset_track.asset_id,
+      "active" => true
+    }
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

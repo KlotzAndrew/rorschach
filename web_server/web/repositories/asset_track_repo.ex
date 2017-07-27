@@ -8,8 +8,10 @@ defmodule WebServer.AssetTrackRepo do
   end
 
   def find_asset_track(portfolio_id, asset_id) do
-    query = from a in AssetTrack,
+    query =
+      from a in AssetTrack,
       where: a.portfolio_id == ^portfolio_id and a.asset_id == ^asset_id
+
     Repo.one(query)
   end
 
