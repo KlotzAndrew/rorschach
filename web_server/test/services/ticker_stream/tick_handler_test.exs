@@ -11,7 +11,6 @@ defmodule TickHandlerTest do
 
   defmodule Broadcaster do
     def broadcast_trades(_trades) do
-      IO.puts "broadcast_trades called!"
       send self(), :broadcasted
     end
 
