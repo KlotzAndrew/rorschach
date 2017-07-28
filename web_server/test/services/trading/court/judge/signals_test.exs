@@ -4,7 +4,7 @@ defmodule Court.SignalsTest do
   alias WebServer.{Asset, DayBar}
 
   defmodule MockAssetRepo do
-    def all_non_cash do
+    def all_active_assets(_portfolio_id) do
       [
         %Asset{name: "asset_1", ticker: "A1", id: 1},
         %Asset{name: "asset_2", ticker: "A2", id: 2},
