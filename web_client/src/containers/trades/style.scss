@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex: 1;
+}
+
+.item {
+  flex: 1;
+}
+
+.name {
+  flex: 2;
+}
+
+.price {
+  flex: 1;
+  text-align: right;
+}
