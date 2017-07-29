@@ -61,13 +61,21 @@ defmodule Court.SignalsTest do
       asset_sums: MockAssetSums,
     }
     signals = Court.Signals.calculate(1, deps)
-    expected = %{
+    expected_1 = %{
       "enter"    => Decimal.new(90.0),
       "exit"     => Decimal.new(110.0),
       "quantity" => 10,
       "traded"   => false
     }
 
-    assert signals["signals"]["A1"] == expected
+    expected_2 = %{
+      "enter"    => Decimal.new(90.0),
+      "exit"     => Decimal.new(110.0),
+      "quantity" => 0,
+      "traded"   => false
+    }
+
+    assert signals["signals"]["A1"] == expected_1
+    assert signals["signals"]["A2"] == expected_2
   end
 end

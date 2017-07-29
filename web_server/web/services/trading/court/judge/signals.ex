@@ -24,7 +24,7 @@ defmodule Court.Signals do
     case Enum.find(
     totals, fn({id, _q}) -> id == asset_id end) do
       {_id, q} -> q
-      nil      -> nil
+      nil      -> 0
     end
   end
 

@@ -6,8 +6,6 @@ IO.puts "Seeding database..."
 
 if Repo.aggregate(Portfolio, :count, :id) == 0 do
   Repo.transaction fn ->
-    Repo.insert! %Asset{name: "Amazon", ticker: "AMZN"}
-    Repo.insert! %Asset{name: "Netflix", ticker: "NFLX"}
     cash = Repo.insert! %Asset{name: "USD", ticker: "CASH:USD"}
 
     portfolio_1 = Repo.insert! %Portfolio{
