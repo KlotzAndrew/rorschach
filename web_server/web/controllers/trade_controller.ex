@@ -2,7 +2,7 @@ defmodule WebServer.TradeController do
   use WebServer.Web, :controller
   import Ecto.Query
 
-  alias WebServer.{Trade, AssetSums}
+  alias WebServer.{Trade, TradeRepo}
 
   def index(conn, _params) do
     query = from t in Trade,
@@ -14,12 +14,12 @@ defmodule WebServer.TradeController do
   end
 
   def cash_holdings(conn, %{"portfolio_id" => portfolio_id}) do
-    holdings = AssetSums.cash(portfolio_id)
+    holdings = TradeRepo.cash(portfolio_id)
     render(conn, "asset_holdings.json", holdings: holdings)
   end
 
   def stock_holdings(conn, %{"portfolio_id" => portfolio_id}) do
-    holdings = AssetSums.stocks(portfolio_id)
+    holdings = TradeRepo.stocks(portfolio_id)
     render(conn, "asset_holdings.json", holdings: holdings)
   end
 

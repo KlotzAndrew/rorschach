@@ -1,5 +1,5 @@
 defmodule Court.Signals do
-  alias WebServer.{AssetRepo, Portfolio, AssetSums}
+  alias WebServer.{AssetRepo, Portfolio, TradeRepo}
   alias AtClient.{DayBars}
 
   def calculate(porfolio_id, deps \\ calculate_deps()) do
@@ -62,7 +62,7 @@ defmodule Court.Signals do
       asset_repo: AssetRepo,
       portfolio:  Portfolio,
       day_bars:   DayBars,
-      asset_sums: AssetSums
+      asset_sums: TradeRepo
     }
   end
 end

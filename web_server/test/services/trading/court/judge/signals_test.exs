@@ -23,7 +23,7 @@ defmodule Court.SignalsTest do
     end
   end
 
-  defmodule MockAssetSums do
+  defmodule MockTradeRepo do
     def stocks(_) do
       [{1, 10}]
     end
@@ -34,7 +34,7 @@ defmodule Court.SignalsTest do
       asset_repo: MockAssetRepo,
       portfolio:  Portfolio,
       day_bars:   MockDayBars,
-      asset_sums: MockAssetSums,
+      asset_sums: MockTradeRepo,
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -46,7 +46,7 @@ defmodule Court.SignalsTest do
       asset_repo: MockAssetRepo,
       portfolio:  Portfolio,
       day_bars:   MockDayBars,
-      asset_sums: MockAssetSums,
+      asset_sums: MockTradeRepo,
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -58,7 +58,7 @@ defmodule Court.SignalsTest do
       asset_repo: MockAssetRepo,
       portfolio:  Portfolio,
       day_bars:   MockDayBars,
-      asset_sums: MockAssetSums,
+      asset_sums: MockTradeRepo,
     }
     signals = Court.Signals.calculate(1, deps)
     expected_1 = %{
