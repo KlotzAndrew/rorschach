@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTradeSignals, toggleAssetTrack } from '../../actions/index';
 import Currency from '../currency';
+import styles from './style.scss';
 
 export class Portfolio extends Component {
   componentWillMount() {
@@ -36,6 +37,7 @@ export class Portfolio extends Component {
       const values = tradeSignals[ticker]
       return <div
         key={i}
+        className={styles.remove}
         onClick={() => that.removeAssetTrack(portfolioId, ticker)} >
           Ticker: {ticker} |
           enter: <Currency value={values.enter} /> |

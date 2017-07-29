@@ -1,0 +1,7 @@
+@import '../../styles/colors';
+
+.remove {
+  &:hover {
+    color: $tertiary-color-1
+  }
+}
