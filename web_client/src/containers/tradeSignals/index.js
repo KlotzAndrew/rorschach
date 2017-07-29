@@ -17,33 +17,39 @@ export class Portfolio extends Component {
     return (
       <div>
         <div>trade signals</div>
-        {this.mapSignals(tradeSignals)}
+        {this.mapSignals(tradeSignals, this.props.portfolio.id, this)}
         <div>
           <input
             type="text"
             value={this.state.ticker}
             placeholder="Add ticker"
             onChange={e => this.setState({ticker: e.target.value})}
-            onKeyPress={this.submitTicker}/>
+            onKeyPress={this.addAssetTrack}/>
         </div>
       </div>
     )
   }
 
-  mapSignals(tradeSignals) {
+  mapSignals(tradeSignals, portfolioId, that) {
     if (!tradeSignals) { return null }
-    return Object.keys(tradeSignals).map(function(key, i) {
-      const values = tradeSignals[key]
-      return <div key={i}>
-        Ticker: {key} |
-        enter: <Currency value={values.enter} /> |
-        exit: <Currency value={values.exit} /> |
-        traded: {JSON.stringify(values.traded)}
+    return Object.keys(tradeSignals).map(function(ticker, i) {
+      const values = tradeSignals[ticker]
+      return <div
+        key={i}
+        onClick={() => that.removeAssetTrack(portfolioId, ticker)} >
+          Ticker: {ticker} |
+          enter: <Currency value={values.enter} /> |
+          exit: <Currency value={values.exit} /> |
+          traded: {JSON.stringify(values.traded)}
       </div>
     })
   }
 
-  submitTicker = event => {
+  removeAssetTrack = (portfolioId, ticker) => {
+    this.props.toggleAssetTrack(portfolioId, ticker, false)
+  }
+
+  addAssetTrack = event => {
     if (event.key === 'Enter') {
       this.props.toggleAssetTrack(this.props.portfolio.id, this.state.ticker, true)
       this.setState({ticker: ''});

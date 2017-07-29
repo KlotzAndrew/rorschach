@@ -70,7 +70,7 @@ export const getTradeSignals = portfolioId => dispatch => {
 export const toggleAssetTrack = (portfolioId, ticker, active) => dispatch => {
   portfolio.toggleAssetTrack(portfolioId, ticker, active)
     .then(repsonse => {
-      console.log("ticker added", repsonse.data) // TODO: notifications!
+      console.log("asset track toggled!", repsonse.data) // TODO: notifications!
     })
 }
 

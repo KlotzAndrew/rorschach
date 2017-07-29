@@ -1,5 +1,5 @@
 defmodule WebServer.AssetTracker do
-  alias WebServer.{AssetFetcher, Broadcaster, MarketConsumer, PortfolioRepository}
+  alias WebServer.{AssetFetcher, Broadcaster, MarketConsumer, PortfolioRepository, AssetTrackRepo}
   alias Court.{Judge}
 
   def start_tracking(ticker) do
@@ -9,6 +9,18 @@ defmodule WebServer.AssetTracker do
     update_signals()
 
     asset
+  end
+
+  def toggle_tracking(portfolio_id, asset, active) do
+    asset_track = AssetTrackRepo.toggle(active, portfolio_id, asset.id)
+    refresh_all()
+
+    asset_track
+  end
+
+  defp refresh_all do
+    MarketConsumer.update_stream
+    update_signals()
   end
 
   # TODO: this can be done without hitting the db

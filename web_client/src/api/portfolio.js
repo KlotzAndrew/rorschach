@@ -31,7 +31,7 @@ export default{
       {
         portfolio_id: portfolio_id,
         ticker: ticker,
-        active: true
+        active: active
       }
     );
   }
