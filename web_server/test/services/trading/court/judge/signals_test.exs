@@ -23,12 +23,18 @@ defmodule Court.SignalsTest do
     end
   end
 
+  defmodule MockAssetSums do
+    def stocks(_) do
+      [{1, 10}]
+    end
+  end
+
   test "calculate includes created_at time" do
     deps = %{
       asset_repo: MockAssetRepo,
       portfolio:  Portfolio,
-      asset:      Asset,
-      day_bars:   MockDayBars
+      day_bars:   MockDayBars,
+      asset_sums: MockAssetSums,
     }
     signals = Court.Signals.calculate(1, deps)
 
@@ -39,26 +45,27 @@ defmodule Court.SignalsTest do
     deps = %{
       asset_repo: MockAssetRepo,
       portfolio:  Portfolio,
-      asset:      Asset,
-      day_bars:   MockDayBars
+      day_bars:   MockDayBars,
+      asset_sums: MockAssetSums,
     }
     signals = Court.Signals.calculate(1, deps)
 
     assert Map.keys(signals["signals"]) == ["A1", "A2"]
   end
 
-  test "calculate adds enter and exit" do
+  test "calculate adds values to asset" do
     deps = %{
       asset_repo: MockAssetRepo,
       portfolio:  Portfolio,
-      asset:      Asset,
-      day_bars:   MockDayBars
+      day_bars:   MockDayBars,
+      asset_sums: MockAssetSums,
     }
     signals = Court.Signals.calculate(1, deps)
     expected = %{
-      "enter"  => Decimal.new(90.0),
-      "exit"   => Decimal.new(110.0),
-      "traded" => false
+      "enter"    => Decimal.new(90.0),
+      "exit"     => Decimal.new(110.0),
+      "quantity" => 10,
+      "traded"   => false
     }
 
     assert signals["signals"]["A1"] == expected

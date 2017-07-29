@@ -9,19 +9,6 @@ defmodule Court.ArbiterTest do
     ask_price: Decimal.new(50)
   }
 
-  test "decides buys" do
-    signals = %{
-      "NFLX" => %{
-        "enter"  => Decimal.new(90),
-        "exit"   => Decimal.new(100),
-        "traded" => false
-      }
-    }
-    result = Arbiter.decide(signals, @tick)
-
-    assert result[:decision] == {:buy, 1}
-  end
-
   test "decides does nothing when no signals" do
     signals = %{
       "NFLX" => %{
@@ -45,9 +32,10 @@ defmodule Court.ArbiterTest do
   test "decides no buy when traded" do
     signals = %{
       "NFLX" => %{
-        "enter"  => Decimal.new(90),
-        "exit"   => Decimal.new(100),
-        "traded" => true
+        "enter"    => Decimal.new(90),
+        "exit"     => Decimal.new(100),
+        "quantity" => 1,
+        "traded"   => true
       }
     }
     result = Arbiter.decide(signals, @tick)
@@ -55,26 +43,28 @@ defmodule Court.ArbiterTest do
     assert result[:decision] == nil
   end
 
-  test "decides sells when traded" do
+  test "decides does not sell for q=0" do
     signals = %{
       "NFLX" => %{
-        "enter"  => Decimal.new(9),
-        "exit"   => Decimal.new(10),
-        "traded" => true
+        "enter"    => Decimal.new(9),
+        "exit"     => Decimal.new(10),
+        "quantity" => 0,
+        "traded"   => true
       }
     }
     result = Arbiter.decide(signals, @tick)
 
-    assert result[:decision] == {:sell, -1}
+    assert result[:decision] == nil
   end
 
   test "decide for close decimal compares" do
     tick = %Tick{ticker: "NFLX", ask_price: Decimal.new(-1)}
     signals = %{
       "NFLX" => %{
-        "enter"  => Decimal.new(0),
-        "exit"   => Decimal.new(10),
-        "traded" => false
+        "enter"    => Decimal.new(0),
+        "exit"     => Decimal.new(10),
+        "quantity" => 0,
+        "traded"   => false
       }
     }
 
@@ -86,16 +76,18 @@ defmodule Court.ArbiterTest do
   test "decide updates signals" do
     signals = %{
       "NFLX" => %{
-        "enter"  => Decimal.new(90),
-        "exit"   => Decimal.new(100),
-        "traded" => false
+        "enter"    => Decimal.new(90),
+        "exit"     => Decimal.new(100),
+        "quantity" => 0,
+        "traded"   => false
       }
     }
     after_buy = %{
       "NFLX" => %{
-        "enter"  => Decimal.new(90),
-        "exit"   => Decimal.new(100),
-        "traded" => true
+        "enter"    => Decimal.new(90),
+        "exit"     => Decimal.new(100),
+        "quantity" => 1,
+        "traded"   => true
       }
     }
     result = Arbiter.decide(signals, @tick)

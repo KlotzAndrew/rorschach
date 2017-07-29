@@ -17,10 +17,14 @@ defmodule Court.Arbiter do
 
   defp update_signals(nil, all_signals, _tick), do: all_signals
   defp update_signals(decision, all_signals, tick) do
-    put_in(
-      all_signals,
-      [tick.ticker, "traded"], traded_value(decision)
-    )
+    ticker = tick.ticker
+    all_signals
+      |> put_in([ticker, "traded"], traded_value(decision))
+      |> put_in([ticker, "quantity"], new_quantity(all_signals, ticker, decision))
+  end
+
+  defp new_quantity(all_signals, ticker, {_type, q}) do
+    get_in(all_signals, [ticker, "quantity"]) + q
   end
 
   defp traded_value({:buy, _q}), do: true
@@ -30,6 +34,12 @@ defmodule Court.Arbiter do
   defp calc(%{"enter" => nil, "exit" => _ex, "traded" => _tr}, _tick), do: nil
   defp calc(%{"enter" => _ent, "exit" => nil, "traded" => _tr}, _tick), do: nil
   defp calc(%{"enter" => nil, "exit" => nil, "traded" => _tr}, _tick), do: nil
+  defp calc(%{"enter" => ent, "exit" => _ex, "traded" => _tr, "quantity" => 0}, tick) do
+    cond do
+      lt?(tick.ask_price, ent) -> {:buy, 1}
+      true -> nil
+    end
+  end
   defp calc(%{"enter" => _ent, "exit" => ex, "traded" => true}, tick) do
     cond do
       gt?(tick.ask_price, ex) -> {:sell, -1}
