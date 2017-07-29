@@ -1,7 +1,7 @@
 defmodule WebServer.AssetTrackController do
   use WebServer.Web, :controller
 
-  alias WebServer.{AssetTrack, AssetTrackRepo}
+  alias WebServer.{AssetTrack, AssetTrackRepo, AssetTracker}
 
   def index(conn, _params) do
     asset_tracks = Repo.all(AssetTrack)
@@ -31,6 +31,12 @@ defmodule WebServer.AssetTrackController do
 
   def toggle(conn, %{"active" => active, "portfolio_id" => portfolio_id, "asset_id" => asset_id}) do
     asset_track = AssetTrackRepo.toggle(active, portfolio_id, asset_id)
+    render(conn, "show.json", asset_track: asset_track)
+  end
+
+  def toggle(conn, %{"active" => active, "portfolio_id" => portfolio_id, "ticker" => ticker}) do
+    asset = AssetTracker.start_tracking(ticker)
+    asset_track = AssetTrackRepo.toggle(active, portfolio_id, asset.id)
     render(conn, "show.json", asset_track: asset_track)
   end
 

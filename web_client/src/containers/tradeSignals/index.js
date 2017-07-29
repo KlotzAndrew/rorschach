@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getTradeSignals } from '../../actions/index';
+import { getTradeSignals, toggleAssetTrack } from '../../actions/index';
 import Currency from '../currency';
 
 export class Portfolio extends Component {
@@ -8,10 +8,25 @@ export class Portfolio extends Component {
     this.props.getTradeSignals(this.props.portfolio.id);
   }
 
+  state = {
+    ticker: '',
+  };
+
   render() {
     const { tradeSignals } = this.props;
     return (
-      <div>{this.mapSignals(tradeSignals)}</div>
+      <div>
+        <div>trade signals</div>
+        {this.mapSignals(tradeSignals)}
+        <div>
+          <input
+            type="text"
+            value={this.state.ticker}
+            placeholder="Add ticker"
+            onChange={e => this.setState({ticker: e.target.value})}
+            onKeyPress={this.submitTicker}/>
+        </div>
+      </div>
     )
   }
 
@@ -27,6 +42,13 @@ export class Portfolio extends Component {
       </div>
     })
   }
+
+  submitTicker = event => {
+    if (event.key === 'Enter') {
+      this.props.toggleAssetTrack(this.props.portfolio.id, this.state.ticker, true)
+      this.setState({ticker: ''});
+    }
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -37,5 +59,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  { getTradeSignals }
+  { getTradeSignals, toggleAssetTrack }
 )(Portfolio);

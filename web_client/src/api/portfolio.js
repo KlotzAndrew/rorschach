@@ -23,5 +23,16 @@ export default{
 
   getTradeSignals(portfolio_id) {
     return axiosInstance.get(`trade_signals/${portfolio_id}`);
+  },
+
+  toggleAssetTrack(portfolio_id, ticker, active) {
+    return axiosInstance.post(
+      `asset_tracks/toggle`,
+      {
+        portfolio_id: portfolio_id,
+        ticker: ticker,
+        active: true
+      }
+    );
   }
 }
