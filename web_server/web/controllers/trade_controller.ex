@@ -2,7 +2,7 @@ defmodule WebServer.TradeController do
   use WebServer.Web, :controller
   import Ecto.Query
 
-  alias WebServer.{Trade, TradeRepo}
+  alias WebServer.{CSVBuilder, Trade, TradeRepo}
 
   def index(conn, _params) do
     query = from t in Trade,
@@ -56,5 +56,13 @@ defmodule WebServer.TradeController do
         |> put_status(:unprocessable_entity)
         |> render(WebServer.ChangesetView, "error.json", changeset: changeset)
     end
+  end
+
+  def csv(conn, %{"portfolio_id" => portfolio_id}) do
+    csv_content = CSVBuilder.dump_trades(portfolio_id)
+    conn
+      |> put_resp_content_type("text/csv")
+      |> put_resp_header("content-disposition", "attachment; filename=\"A Real CSV.csv\"")
+      |> send_resp(200, csv_content)
   end
 end

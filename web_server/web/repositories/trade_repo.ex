@@ -2,6 +2,14 @@ defmodule WebServer.TradeRepo do
   import Ecto.Query
   alias WebServer.{Repo, Trade}
 
+  def trades_for_portfolio(portfolio_id, repo \\ Repo) do
+    query = from t in Trade,
+              where: t.portfolio_id == ^portfolio_id,
+              select: t
+
+    repo.all(query)
+  end
+
   def stocks(portfolio_id, repo \\ Repo) do
     query = from t in Trade,
             where: t.portfolio_id == ^portfolio_id and not is_nil(t.asset_id),

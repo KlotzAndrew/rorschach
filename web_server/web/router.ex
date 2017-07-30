@@ -34,6 +34,7 @@ defmodule WebServer.Router do
     post "/assets/start_tracking", AssetController, :start_tracking
     get "/trades/cash_holdings/:portfolio_id", TradeController, :cash_holdings
     get "/trades/stock_holdings/:portfolio_id", TradeController, :stock_holdings
+    get "/trades/csv/:portfolio_id", TradeController, :csv
     get "/trade_signals/:portfolio_id", TradeSignalController, :index
   end
 end
