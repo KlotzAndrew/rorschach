@@ -4,10 +4,11 @@ import {
   getPortfolios, getAssets
 } from './actions/index';
 import Portfolio from './containers/portfolio'
-import Trades from './containers/trades'
-import Ticks from './containers/ticks'
+import Trades from './containers/trades';
+import Ticks from './containers/ticks';
 import TradeSignals from './containers/tradeSignals'
 import NavBar from './containers/navBar'
+import { Link } from 'react-router-dom';
 import './App.css';
 
 export class App extends Component {
@@ -44,6 +45,7 @@ export class App extends Component {
           key={key}
           portfolio={portfolio}
           assets={that.props.assets} />
+        <Link to={`/trades/${portfolio.id}`}>Trades</Link>
         <TradeSignals
           key={key + 'ts'}
           portfolio={portfolio} />

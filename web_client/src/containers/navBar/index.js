@@ -7,7 +7,6 @@ export class NavBar extends Component {
     return (
       <div>
         <Link to="/">Home</Link>
-        <Link to="/trades">Trades</Link>
       </div>
     )
   }

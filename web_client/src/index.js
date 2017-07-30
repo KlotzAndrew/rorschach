@@ -47,7 +47,7 @@ channel.on('new:signals', payload => {
 const routes = (
   <div>
     <Route exact={true} path="/" component={App}/>
-    <Route exact={true} path="/trades" component={Trades}/>
+    <Route exact={true} path="/trades/:id" component={Trades}/>
   </div>
 )
 
