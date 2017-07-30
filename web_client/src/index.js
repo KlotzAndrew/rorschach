@@ -7,8 +7,13 @@ import thunk from 'redux-thunk';
 import { Socket } from 'phoenix-socket';
 import { addTrade, addTick, updateSignals } from './actions/index'
 import App from './App';
+import Trades from './containers/pages/trades';
 import './index.css';
 import reducer from './reducers/index'
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom';
 
 const store = createStore(
   reducer,
@@ -39,10 +44,16 @@ channel.on('new:signals', payload => {
   }
 );
 
+const routes = (
+  <div>
+    <Route exact={true} path="/" component={App}/>
+    <Route exact={true} path="/trades" component={Trades}/>
+  </div>
+)
 
 render(
   <Provider store={store}>
-    <App />
+    <Router>{routes}</Router>
   </Provider>,
   document.getElementById('root')
 );

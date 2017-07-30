@@ -7,6 +7,7 @@ import Portfolio from './containers/portfolio'
 import Trades from './containers/trades'
 import Ticks from './containers/ticks'
 import TradeSignals from './containers/tradeSignals'
+import NavBar from './containers/navBar'
 import './App.css';
 
 export class App extends Component {
@@ -19,6 +20,7 @@ export class App extends Component {
     return (
       <div className="App">
         <div>Rorschack</div>
+        <NavBar />
 
         <div>Portfolios</div>
         {this.mapPortfolios(this.props.portfolios)}
