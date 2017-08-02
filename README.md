@@ -19,3 +19,17 @@ export KAFKA_HOST=192.168.99.100
 export KAFKA_HOST=192.168.99.100
 export MARKET_URL=192.168.99.100
 ```
+
+### Deploy
+
+```shell
+export DOTOKEN=123token
+
+# docker-machine create \
+#   --driver digitalocean \
+#   --digitalocean-access-token $DOTOKEN \
+#   rorschach-node-1
+
+# need a destination address for frontend
+./tag_latest.sh https://hostname
+```

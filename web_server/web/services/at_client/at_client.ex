@@ -3,7 +3,7 @@ defmodule WebServer.AtClient do
   alias WebServer.{Tick}
 
   def streaming_url(tickers) do
-    base_url = "#{market_stream_url()}:5020/quoteStream?symbol="
+    base_url = "#{market_stream_url()}:5000/quoteStream?symbol="
 
     base_url <> Enum.join(tickers, "+")
   end

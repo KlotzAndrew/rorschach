@@ -1,9 +1,4 @@
-FROM node:6.9.5
+FROM nginx
 
-RUN mkdir /code
-WORKDIR /code
-
-ADD package.json /code/package.json
-RUN npm install
-
-ADD . /code
+# build locally
+COPY build /usr/share/nginx/html

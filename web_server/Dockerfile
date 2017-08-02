@@ -1,14 +1,17 @@
 FROM elixir:1.4.1
 
+ENV APP /code
+
 RUN mix local.hex --force
 RUN mix local.rebar --force
 
-RUN mkdir /code
-WORKDIR /code
+RUN mkdir -p $APP
+WORKDIR $APP
 
-COPY mix.exs /code/mix.exs
-COPY mix.lock /code/mix.lock
+COPY mix.exs $APP
+COPY mix.lock $APP
 RUN mix deps.get
 
-COPY . ./code
+COPY . $APP
 
+RUN mix compile

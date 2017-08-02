@@ -1,0 +1,12 @@
+FROM node:6.10.3
+
+ENV WORK_DIR=/code
+
+RUN mkdir $WORK_DIR
+WORKDIR $WORK_DIR
+
+COPY . /code
+
+RUN yarn install
+
+ENTRYPOINT ["yarn", "build"]

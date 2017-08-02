@@ -57,6 +57,6 @@ function charsToInt(symbol) {
   return value / symbol.split('').length
 }
 
-app.listen(5020, function () {
-  console.log('Market client demo running on 5020!')
+app.listen(5000, function () {
+  console.log('Market client demo running on 5000!')
 })

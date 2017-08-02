@@ -153,7 +153,7 @@ module.exports = {
         include: paths.appSrc,
         loader: ExtractTextPlugin.extract(
           'style',
-          'style!css?importLoaders=1&modules!postcss!sass',
+          'css?importLoaders=1!postcss!sass',
           extractTextPluginOptions
         )
       },

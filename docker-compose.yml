@@ -46,7 +46,7 @@ services:
       - ./market_mock:/code
     command: node app.js
     ports:
-      - "5020:5020"
+      - "5000:5000"
 
   web_client:
     build: ./web_client
