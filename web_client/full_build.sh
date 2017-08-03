@@ -3,7 +3,7 @@
 set -ex
 
 API_URL=$1
-WEBSOCKET_SERVER=$1
+WEBSOCKET_SERVER=$2
 
 if [ "$(docker ps -a | grep builder_cont)" ]; then docker rm builder_cont; fi
 if [ "$(docker images | grep builder_img)" ]; then docker rmi builder_img; fi

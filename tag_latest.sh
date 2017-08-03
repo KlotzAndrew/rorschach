@@ -5,6 +5,7 @@ echo "Building and tagging latest..."
 set -e
 
 TARGET_HOST=$1
+WS_HOST=$2
 if [ -z $TARGET_HOST ]; then echo "TARGET_HOST not set" && exit 1; fi
 
 USER="klotzandrew"
@@ -12,7 +13,7 @@ APP_NAME="rorschach"
 
 echo "frontend needs build container"
 cd web_client
-bash ./full_build.sh $TARGET_HOST
+bash ./full_build.sh $TARGET_HOST $WS_HOST
 cd ..
 
 echo "Building images..."

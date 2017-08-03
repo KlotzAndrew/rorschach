@@ -31,5 +31,5 @@ export DOTOKEN=123token
 #   rorschach-node-1
 
 # need a destination address for frontend
-./tag_latest.sh https://hostname
+./tag_latest.sh https://hostname wss://wshostname
 ```
